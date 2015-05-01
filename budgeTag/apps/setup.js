@@ -53,7 +53,8 @@ app.use(cookieParser());
  */
 
 var routes = [
-    //'apps/app_name/route'
+    'tag/route'
+    //'app_name/route'
 ];
 routes.forEach(function(route){
     require(path.join(__dirname, route))(app);
@@ -68,14 +69,15 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function(){
     var models = [
-        //'apps/app_name/model'
+        'tag/model'
+        //'app_name/model'
     ];
     models.forEach(function(model){
         require(path.join(__dirname, model));
     });
 });
 
-mongoose.connect('mongodb://localhost/BudgeTag');
+mongoose.connect('mongodb://localhost/budgeTag');
 
 /*
  * Catch 404 and forward to error handler
