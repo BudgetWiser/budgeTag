@@ -3,7 +3,8 @@
  */
 
 var express = require('express'),
-    tagModel = require('./model');
+    tagModel = require('./model'),
+    parser = require('../apps/clib/parser');
 
 /*
  * Model setup
