@@ -6,7 +6,8 @@ var express = require('express'),
     request = require('request'),
     cheerio = require('cheerio'),
     iconv = require('iconv-lite'),
-    async = require('async');
+    async = require('async'),
+    newspaper = require('./newspaper');
 
 /*
  * Parser module
@@ -65,10 +66,10 @@ parser.getNewsPages = function(links, next, callback){
 
     async.map(links, reqURL, function(err, html){
         html.forEach(function(h, i, arr){
+            console.log('=======================================================================');
             var $ = cheerio.load(h);
-
             console.log($('title').text());
-
+            console.log(newspaper.getTitle(h));
         });
         callback();
     });
