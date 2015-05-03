@@ -67,9 +67,7 @@ parser.getNewsPages = function(links, next, callback){
     async.map(links, reqURL, function(err, html){
         html.forEach(function(h, i, arr){
             console.log('=======================================================================');
-            var $ = cheerio.load(h);
-            console.log($('title').text());
-            console.log(newspaper.getTitle(h));
+            console.log(newspaper.getTitle(h), '\n', newspaper.getContent(h));
         });
         callback();
     });

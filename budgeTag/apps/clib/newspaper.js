@@ -35,6 +35,10 @@ var clean = function(array){
 
 var newspaper = {};
 
+/*
+ * Newspaper - .getTitle(html)
+ */
+
 newspaper.getTitle = function(html){
     var $ = cheerio.load(html),
         title = '',
@@ -140,6 +144,69 @@ newspaper.refineTitle = function(title){
     }
 
     return output;
+};
+
+/*
+ * Newspaper - .getContent(html)
+ */
+
+newspaper.getContent = function(html){
+    html = String(html).replace(/<!--[\s\S]*?-->/g, "");
+    html = String(html).replace(/\n|\r/g, "");
+
+    var $ = cheerio.load(html);
+
+    $('script, style, head, meta, ul, h6, h5, h4, h3, h2, h1').remove();
+
+    var parents = $('br, p').parent(':contains("다.")');
+
+    //.replace(/\t/g, '')
+    var all_str = "";
+
+    for(var i = parents.length - 1; i >= 0; i--){
+        var children = $(parents[i]).children();
+
+        var children_str = "",
+            parent_str = $(parents[i]).text();
+
+        for(var j = 0; j < children.length; j++){
+            children_str += $(children[j]).text();
+        }
+
+        children_str = trim(children_str.replace(/\t/g, ''));
+        parent_str = trim(parent_str.replace(/\t/g, ''));
+
+        if(parent_str.indexOf(children_str) == -1){
+            str = parent_str + '\n' + children_str;
+        }else{
+            str = parent_str;
+        }
+
+        if(all_str != ""){
+            if(all_str.indexOf(str) == -1 && str.indexOf(all_str) == -1){
+                all_str = str + '\n' + all_str;
+            }
+        }else{
+            if(all_str.indexOf(str) == -1){
+                all_str = str + '\n' + all_str;
+            }
+        }
+    }
+
+    return newspaper.refineContent(all_str);
+};
+
+newspaper.refineContent = function(content){
+    var lines = content.split('\n'),
+        refined = [];
+
+    for(var i = 0; i < lines.length; i++){
+        if(lines[i].length > 300){
+            refined.push(lines[i]);
+        }
+    }
+
+    return refined.join('\n');
 };
 
 module.exports = newspaper;
