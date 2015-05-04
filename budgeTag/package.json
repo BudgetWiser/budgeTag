@@ -20,6 +20,7 @@
         "cheerio": "*",
         "async": "*",
         "iconv-lite": "*",
-        "fs": "*"
+        "fs": "*",
+        "string_decoder": "*"
     }
 }

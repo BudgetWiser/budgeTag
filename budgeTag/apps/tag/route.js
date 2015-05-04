@@ -4,7 +4,7 @@
 
 var express = require('express'),
     tagModel = require('./model'),
-    parser = require('../apps/clib/parser');
+    Parser = require('../clib/parser').Parser;
 
 /*
  * Model setup
@@ -19,8 +19,18 @@ var express = require('express'),
 view = {};
 
 view.index = function(req, res){
-    res.status(200)
-    res.render('test');
+    res.render('test_index');
+};
+
+view.issue = function(req, res){
+    var issue = req.query.issue,
+        parser = new Parser();
+
+    parser.getBudgetByKeyword(issue, function(services){
+        res.render('test_issue', {
+            data: services
+        });
+    });
 };
 
 /*
@@ -32,6 +42,7 @@ function setup(app){
 
     //view
     app.get('/tag', view.index);
+    app.get('/issue', view.issue);
 }
 
 module.exports = setup;
