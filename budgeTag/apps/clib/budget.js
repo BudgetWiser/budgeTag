@@ -161,7 +161,7 @@ function budget(){
             }
         }
 
-        return select(selected, 5);
+        return select(selected, 10);
     };
 };
 

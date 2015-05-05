@@ -1,0 +1,41 @@
+{{#yield-title}}"{{keyword}}"로 찾은 예산 사업들{{/yield-title}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/tag/candidate.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        var keyword = "{{keyword}}",
+            services = [];
+
+        {{#services}}
+        var service = {
+            _id: "{{_id}}",
+            name: "{{name}}",
+            categories: "{{categories}}".split(","),
+            sum: "{{sum}}".split(",")
+        };
+        services.push(service);
+        {{/services}}
+
+        Candidate.initialize(keyword, services);
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/tag/candidate.css">
+{{/yield-stylesheets}}
+{{#yield-content}}
+<div id="wrapper-keyword">
+    {{keyword}}로 나타난 예산 사업들
+    평가해주세요. 뭐시기뭐시기
+</div>
+<div id="wrapper-cands">
+    <div id="cands">
+        <ul class="cands-list">
+        </ul>
+    </div>
+</div>
+<div id="wrapper-submit">
+    <button type="button" id="submit">나의 생각 제출하기</button>
+</div>
+{{/yield-content}}
+

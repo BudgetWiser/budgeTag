@@ -1,0 +1,25 @@
+{{#yield-title}}이슈 키워드로 예산 찾기{{/yield-title}}
+{{#yield-scripts}}
+{{/yield-scripts}}
+{{#yield-stylesheets}}
+{{/yield-stylesheets}}
+{{#yield-content}}
+<div id="wrapper-search">
+    <div id="search-input">
+        <form action="/tag/cands">
+            <input class="search-input-text" type="text" name="keyword" placeholder="예산 키워드를 입력하세요.">
+            <input type="submit" class="search-input-button" value="예산 사업 찾기">
+        </form>
+    </div>
+    <div id="search-rcmd">
+        추천 키워드
+        <ul class="search-rcmd-list">
+            {{#keywords}}
+            <li class="search-rcmd-item">
+                <a href="/tag/cands?keyword={{keyword}}">{{keyword}}</a>
+            </li>
+            {{/keywords}}
+        </ul>
+    </div>
+</div>
+{{/yield-content}}

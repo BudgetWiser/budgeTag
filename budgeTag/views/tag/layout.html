@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>{{{yield-title}}}</title>
+
+        <!-- META DATA -->
+        <meta charset="utf-8">
+        <meta name="description" content="budgetag project">
+        <meta name="keywords" content="budgetwiser, kaist, budget, tag">
+        <meta name="author" content="Jonghyuk Jung, http://jonghyuk.info/">
+
+        <!-- SCRIPTS -->
+        <script type="text/javascript" src="/static/js/plugin/jquery-2.1.3.min.js"></script>
+        {{{yield-scripts}}}
+
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" type="text/css" href="/static/css/tag/layout.css">
+        {{{yield-stylesheets}}}
+    </head>
+    <body>
+        <div id="wrapper">
+            {{{yield-content}}}
+        </div>
+    </body>
+</html>
