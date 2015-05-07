@@ -2,6 +2,7 @@
 {{#yield-scripts}}
 {{/yield-scripts}}
 {{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/tag/search.css">
 {{/yield-stylesheets}}
 {{#yield-content}}
 <div id="wrapper-search">
@@ -12,7 +13,6 @@
         </form>
     </div>
     <div id="search-rcmd">
-        추천 키워드
         <ul class="search-rcmd-list">
             {{#keywords}}
             <li class="search-rcmd-item">

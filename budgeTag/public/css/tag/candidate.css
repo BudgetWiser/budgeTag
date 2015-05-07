@@ -1,6 +1,189 @@
-.cands-item-buttons button.nor{
-    background: #fff;
+html, body, #wrapper{
+    overflow: auto;
 }
-.cands-item-buttons button.sel{
-    background: #56d869;
+#wrapper-keyword{
+    width: 100%;
+}
+#wrapper-keyword>h1{
+    width: 1000px;
+    height: 50px;
+    margin: 80px auto 40px auto;
+    font-size: 33px;
+    line-height: 50px;
+    color: #fff;
+}
+#wrapper-keyword>h1>a{
+    width: 50px;
+    height: 50px;
+    font-size: 0;
+    background: url(/static/res/btn_back.png) 0 0 no-repeat;
+    opacity: .75;
+    float: left;
+    margin-right: 16px;
+}
+#wrapper-keyword>h1>a:hover{
+    opacity: 1;
+}
+#wrapper-cands{
+    width: 100%;
+    background: #e3e6e9;
+}
+#subtitle-wrapper{
+    width: 100%;
+    height: 80px;
+    background: #f1f4f7;
+}
+#subtitle{
+    width: 1000px;
+    height: 100%;
+    margin: auto;
+}
+#subtitle>h2{
+    display: inline-block;
+    height: 100%;
+    font-size: 18px;
+    line-height: 80px;
+    color: #626568;
+    float: left;
+}
+#subtitle>h2>span{
+    color: #f9ae1d;
+}
+#subtitle>span{
+    display: inline-block;
+    height: 100%;
+    font-size: 16px;
+    line-height: 80px;
+    color: #91969b;
+    float: right;
+}
+#cands{
+    width: 1020px;
+    margin: auto;
+    margin-top: 20px;
+}
+.cands-list{
+    width: 100%;
+    display: inline-block;
+}
+.cands-item{
+    display: inline-block;
+    float: left;
+    width: 320px;
+    height: 326px;
+    position: relative;
+    margin: 0 10px 20px 10px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+}
+.cands-item-sum{
+    display: block;
+    width: 100%;
+    height: 160px;
+    background: #f5f7fa url(/static/res/img_money.png) 0 0 no-repeat;
+    font-size: 0;
+    line-height: 160px;
+    text-align: center;
+    color: #5b6368;
+}
+.cands-item-sum.money-0{
+    background-image: url(/static/res/img_money_0.png);
+}
+.cands-item-sum.money-1{
+    background-image: url(/static/res/img_money_1.png);
+}
+.cands-item-sum.money-2{
+    background-image: url(/static/res/img_money_2.png);
+}
+.cands-item-sum.money-3{
+    background-image: url(/static/res/img_money_3.png);
+}
+.cands-item-sum.money-4{
+    background-image: url(/static/res/img_money_4.png);
+}
+
+.cands-item-sum:hover{
+    font-size: 40px;
+    background-position: 0 -160px;
+}
+.cands-item-category{
+    display: block;
+    width: 288px;
+    margin: auto;
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #8e969b;
+}
+.cands-item-name{
+    display: block;
+    width: 288px;
+    margin: auto;
+    margin-top: 12px;
+    font-size: 20px;
+    line-height: 26px;
+    color: #505358;
+}
+.cands-item-buttons{
+    width: 294px;
+    height: 40px;
+    margin: auto;
+    margin-top: 12px;
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    margin-left: -147px;
+}
+.cands-item-buttons>button{
+    background-color: transparent;
+    float: left;
+    margin: 0 3px;
+    cursor: pointer;
+}
+.cands-item-buttons>button.nor{
+    width: 92px;
+    height: 40px;
+    font-size: 0;
+    background-position: 0 0;
+}
+.cands-item-buttons>button.nor:hover{
+    background-position: 0 -40px;
+}
+.cands-item-buttons>button.sel{
+    background-position: 0 -80px;
+}
+.cands-item-buttons>button.sel:hover{
+    background-position: 0 -80px;
+}
+.cands-item-agree{
+    background-image: url(/static/res/btn_agree.png);
+}
+.cands-item-disagree{
+    background-image: url(/static/res/btn_disagree.png);
+}
+.cands-item-noidea{
+    background-image: url(/static/res/btn_noidea.png);
+}
+#wrapper-submit{
+    width: 100%;
+    height: 120px;
+    background: #e3e6e9;
+    position: relative;
+}
+#submit{
+    width: 320px;
+    height: 60px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: #f9ae1d;
+    border-radius: 4px;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+#submit:hover{
+    background: #eca00e;
 }

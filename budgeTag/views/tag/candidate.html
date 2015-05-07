@@ -25,10 +25,18 @@
 {{/yield-stylesheets}}
 {{#yield-content}}
 <div id="wrapper-keyword">
-    {{keyword}}로 나타난 예산 사업들
-    평가해주세요. 뭐시기뭐시기
+    <h1>
+        <a href="javascript:history.back()">뒤로 가기</a>
+        <span>"{{keyword}}"</span>
+    </h1>
 </div>
 <div id="wrapper-cands">
+    <div id="subtitle-wrapper">
+        <div id="subtitle">
+            <h2>이슈 키워드와 각 예산 사업들의 <span>연관성</span>을 체크해보세요.</h2>
+            <span>(단위: 천만 원)</span>
+        </div>
+    </div>
     <div id="cands">
         <ul class="cands-list">
         </ul>

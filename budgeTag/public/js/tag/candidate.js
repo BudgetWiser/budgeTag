@@ -76,12 +76,19 @@ Candidate.submitCands = function(){
         url: '/tag/submit',
         data: data,
         success: function(obj){
-            console.log(obj);
+            Candidate.openResult(obj);
         },
         error: function(){
             console.log('Error');
         }
     });
+};
+
+Candidate.openResult = function(obj){
+    var keyword = obj.keyword,
+        cands = obj.cands;
+
+    window.location = '/tag/result?keyword=' + obj.keyword + '&cands=' + obj.cands;
 };
 
 /*
@@ -91,11 +98,24 @@ Candidate.submitCands = function(){
 var Elm = {};
 
 Elm.serviceCard = function(service){
+    var sum = service.sum[0];
+    if(sum == 0){
+        sum = service.sum[1];
+    }
+    sum = (sum / 10000000).toFixed(2);
+
+    var calc = sum;
+
+    if(sum == 0.00){
+        calc = "000";
+    }
+
     var tag =
         '<li class="cands-item">' +
             '<div class="cands-item-info">' +
+                '<span class="cands-item-sum money-' + (calc.length - 3) +'">' + sum + '</span>' +
+                '<span class="cands-item-category">' + service.categories.join(' > ') + '</span>' +
                 '<span class="cands-item-name">' + service.name + '</span>' +
-                '<span class="cands-item-sum">' + service.sum[0] + '</span>' +
             '</div>' +
             '<div class="cands-item-buttons ' + service._id + '">' +
                 '<button class="cands-item-agree nor">관련 있음</button>' +

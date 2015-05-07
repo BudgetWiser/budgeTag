@@ -12,7 +12,10 @@ var issueSchema = new Schema({
     keyword: String,
     sum: Number,
     services: [{
-        service: {type: ObjectId, ref: 'Service'},
+        _id: String,
+        name: String,
+        sum: [Number],
+        categories: [String],
         agree: Number,
         disagree: Number,
         noidea: Number

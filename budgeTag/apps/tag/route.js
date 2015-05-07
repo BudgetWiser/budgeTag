@@ -17,84 +17,136 @@ var Issue = tagModel.Issue,
  * Views
  */
 
-view = {};
+var view = function(){
+    this.index = function(req, res){
+        res.render('test_index');
+    };
 
-view.index = function(req, res){
-    res.render('test_index');
-};
-
-view.issue = function(req, res){
-    var issue = req.query.issue,
-        parser = new Parser();
+    this.issue = function(req, res){
+        var issue = req.query.issue,
+            parser = new Parser();
 
 
-    parser.getBudgetByKeyword(issue, function(services){
-        res.render('test_issue', {
-            data: services
+        parser.getBudgetByKeyword(issue, function(services){
+            res.render('test_issue', {
+                data: services
+            });
         });
-    });
-};
+    };
 
-view.search = function(req, res){
-    keywords = [
-        {keyword: '아리수 수돗물'},
-        {keyword: '노인 복지'},
-        {keyword: '청년 실업'}
-    ];
-    res.render('tag/search', {
-        layout: 'tag/layout',
-        keywords: keywords
-    });
-};
+    this.search = function(req, res){
+        keywords = [
+            {keyword: '노인 복지'},
+            {keyword: '세월호 1주년'},
+            {keyword: '대중교통 요금 인상'},
+            {keyword: '무상 급식'},
+            {keyword: '도시 재생 종합 플랜'},
+        ];
+        res.render('tag/search', {
+            layout: 'tag/layout',
+            keywords: keywords
+        });
+    };
 
-view.candidate = function(req, res){
-    var keyword = req.query.keyword,
-        parser = new Parser();
+    this.candidate = function(req, res){
+        var keyword = req.query.keyword,
+            parser = new Parser();
 
-    Issue.findOne({'keyword': keyword}, function(err, obj){
-        if(err) return console.log(err);
+        Issue.findOne({'keyword': keyword}, function(err, obj){
+            if(err) return console.log(err);
 
-        if(!obj){
-            var issue = new Issue({
-                keyword: keyword,
-                sum: 0
+            if(!obj){
+                var issue = new Issue({
+                    keyword: keyword,
+                    sum: 0
+                });
+
+                issue.save(function(_err){
+                    if(_err) return console.log(_err);
+                });
+            }
+        });
+
+        parser.getBudgetByKeyword(keyword, function(services){
+            var query = [];
+
+            services.map(function(service){
+                query.push({
+                    'name': service.name
+                });
             });
 
-            issue.save(function(_err){
-                if(_err) return console.log(_err);
+            var _services = Service.find({$or: query});
+
+            _services.exec(function(err, obj){
+                api.shuffle(obj);
+                res.render('tag/candidate', {
+                    layout: 'tag/layout',
+                    keyword: keyword,
+                    services: obj
+                });
             });
+        });
+    };
+
+    this.result = function(req, res){
+        var keyword = req.query.keyword,
+            cands = req.query.cands.split(',');
+
+        for(var i = 0; i < cands.length; i++){
+            var _cand = cands[i].split('__');
+
+            cands[i] = _cand;
         }
-    });
+        console.log(cands);
 
-    parser.getBudgetByKeyword(keyword, function(services){
-        var query = [];
+        Issue.findOne({'keyword': keyword}, function(err, issue){
+            if(err) return console.log(err);
 
-        services.map(function(service){
-            query.push({
-                'name': service.name
-            });
-        });
+            var services = issue.services;
+            var related = [];
 
-        var _services = Service.find({$or: query});
+            for(var i = 0; i < services.length; i++){
+                var service = {
+                    _id: services[i]._id,
+                    name: services[i].name,
+                    sum: services[i].sum,
+                    categories: services[i].categories,
+                    agree: services[i].agree,
+                    disagree: services[i].disagree,
+                    noidea: services[i].noidea,
+                };
 
-        _services.exec(function(err, obj){
-            res.render('tag/candidate', {
+
+                for(var j = 0; j < cands.length; j++){
+                    if(cands[j][0] == service._id){
+                        service.did = "true";
+                        service.rel = cands[j][1];
+                        break;
+                    }else{
+                        service.did = "false";
+                        service.rel = "x";
+                    }
+                }
+
+                related.push(service);
+            }
+
+            res.render('tag/result', {
                 layout: 'tag/layout',
-                keyword: keyword,
-                services: obj
+                issue: issue,
+                rels: related
             });
         });
-    });
+    };
 };
 
-view.result = function(req, res){
-};
 
 /*
  * APIs
  */
 
-api = {};
+var api = {};
 
 api.submit = function(req, res){
     var data = req.body;
@@ -126,8 +178,9 @@ api.submit = function(req, res){
             for(var i = 0; i < services.length; i++){
                 var index = -1;
                 for(var j = 0; j < issue.services.length; j++){
-                    if(services[i] == issue.services[j].service){
+                    if(String(services[i]._id) == String(issue.services[j]._id)){
                         index = j;
+                        break;
                     }
                 }
                 if(index == -1){
@@ -135,7 +188,10 @@ api.submit = function(req, res){
 
                     var rel = cands_query[services[i]._id];
                     var _service = {
-                        service: services[i],
+                        _id: services[i]._id,
+                        name: services[i].name,
+                        sum: services[i].sum,
+                        categories: services[i].categories,
                         agree: 0,
                         disagree: 0,
                         noidea: 0
@@ -151,6 +207,8 @@ api.submit = function(req, res){
 
                     issue.services.push(_service);
                 }else{
+                    var rel = cands_query[services[i]._id];
+
                     if(rel == 1){
                         issue.services[index].agree += 1;
                     }else if(rel == -1){
@@ -162,16 +220,44 @@ api.submit = function(req, res){
             }
 
             issue.save(function(__err){
-                if(__err) return res.status(500);
+                if(__err){
+                    console.log(__err);
+                    return res.status(500);
+                }
+                console.log('issue_saved');
+
+                var output_cands = [];
+
+                cands.map(function(cand){
+                    output_cands.push(cand[0] + '__' + String(cand[1]));
+                });
 
                 res.status(200);
                 res.send({
-                    cands: cands,
+                    cands: output_cands,
                     keyword: keyword
                 });
             });
         });
     });
+};
+
+api.shuffle = function(arr){
+    var currentIndex = arr.length, temporaryValue, randomIndex ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = arr[currentIndex];
+        arr[currentIndex] = arr[randomIndex];
+        arr[randomIndex] = temporaryValue;
+    }
+
+    return arr;
 };
 
 
@@ -180,13 +266,12 @@ api.submit = function(req, res){
  */
 
 function setup(app){
-    app.get('/', function(req, res){res.redirect('/tag')});
+    app.get('/', function(req, res){res.redirect('/tag/search')});
 
     //view
-    app.get('/tag', view.index);
-    app.get('/issue', view.issue);
-    app.get('/tag/search', view.search);
-    app.get('/tag/cands', view.candidate);
+    app.get('/tag/search', new view().search);
+    app.get('/tag/cands', new view().candidate);
+    app.get('/tag/result', new view().result);
 
     //api
     app.post('/tag/submit', api.submit);
