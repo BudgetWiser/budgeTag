@@ -102,20 +102,32 @@ Elm.serviceCard = function(service){
     if(sum == 0){
         sum = service.sum[1];
     }
-    sum = (sum / 10000000).toFixed(2);
 
-    var calc = sum;
-
-    if(sum == 0.00){
-        calc = "000";
+    var sum_money = [];
+    if(Math.floor(sum/1000000000000) > 0){
+        sum_money.push(Math.floor(sum/1000000000000) + '조');
+        sum -= Math.floor(sum/1000000000000) * 1000000000000;
     }
+    if(Math.floor(sum/100000000) > 0){
+        sum_money.push(Math.floor(sum/100000000) + '억');
+        sum -= Math.floor(sum/100000000) * 100000000;
+    }
+    if(Math.floor(sum/10000) > 0){
+        sum_money.push(Math.floor(sum/10000) + '만');
+    }
+    if(sum_money.length > 0){
+        sum_money = '약 ' + sum_money.join(' ') + '원';
+    }else{
+        sum_money = '-'
+    }
+
 
     var tag =
         '<li class="cands-item">' +
             '<div class="cands-item-info">' +
-                '<span class="cands-item-sum money-' + (calc.length - 3) +'">' + sum + '</span>' +
-                '<span class="cands-item-category">' + service.categories.join(' > ') + '</span>' +
-                '<span class="cands-item-name">' + service.name + '</span>' +
+                '<span class="cands-item-category">' + service.categories.join(' > ') + '</span><br>' +
+                '<span class="cands-item-name">' + service.name + '</span><br>' +
+                '<span class="cands-item-sum">(' + sum_money + ')</span>' +
             '</div>' +
             '<div class="cands-item-buttons ' + service._id + '">' +
                 '<button class="cands-item-agree nor">관련 있음</button>' +

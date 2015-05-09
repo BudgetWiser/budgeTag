@@ -31,7 +31,7 @@ html, body, #wrapper{
 #subtitle-wrapper{
     width: 100%;
     height: 80px;
-    background: #f1f4f7;
+    background: #297cb4;
 }
 #subtitle{
     width: 1000px;
@@ -41,24 +41,17 @@ html, body, #wrapper{
 #subtitle>h2{
     display: inline-block;
     height: 100%;
-    font-size: 18px;
+    font-size: 22px;
     line-height: 80px;
-    color: #626568;
+    color: #fff;
     float: left;
 }
 #subtitle>h2>span{
     color: #f9ae1d;
-}
-#subtitle>span{
-    display: inline-block;
-    height: 100%;
-    font-size: 16px;
-    line-height: 80px;
-    color: #91969b;
-    float: right;
+    font-weight: 700;
 }
 #cands{
-    width: 1020px;
+    width: 1000px;
     margin: auto;
     margin-top: 20px;
 }
@@ -68,77 +61,50 @@ html, body, #wrapper{
 }
 .cands-item{
     display: inline-block;
-    float: left;
-    width: 320px;
-    height: 326px;
+    width: 100%;
+    height: 112px;
     position: relative;
-    margin: 0 10px 20px 10px;
+    margin: 0 0 10px 0;
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    padding: 20px;
 }
 .cands-item-sum{
-    display: block;
-    width: 100%;
-    height: 160px;
-    background: #f5f7fa url(/static/res/img_money.png) 0 0 no-repeat;
-    font-size: 0;
-    line-height: 160px;
-    text-align: center;
-    color: #5b6368;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 24px;
+    color: #95999f;
+    float: left;
 }
-.cands-item-sum.money-0{
-    background-image: url(/static/res/img_money_0.png);
-}
-.cands-item-sum.money-1{
-    background-image: url(/static/res/img_money_1.png);
-}
-.cands-item-sum.money-2{
-    background-image: url(/static/res/img_money_2.png);
-}
-.cands-item-sum.money-3{
-    background-image: url(/static/res/img_money_3.png);
-}
-.cands-item-sum.money-4{
-    background-image: url(/static/res/img_money_4.png);
-}
-
-.cands-item-sum:hover{
-    font-size: 40px;
-    background-position: 0 -160px;
+.cands-item-info{
+    display: inline-block;
+    float: left;
 }
 .cands-item-category{
-    display: block;
-    width: 288px;
-    margin: auto;
-    margin-top: 20px;
+    display: inline-block;
     font-size: 12px;
     line-height: 14px;
     color: #8e969b;
+    float: left;
 }
 .cands-item-name{
-    display: block;
-    width: 288px;
-    margin: auto;
-    margin-top: 12px;
+    display: inline-block;
     font-size: 20px;
     line-height: 26px;
     color: #505358;
+    float: left;
 }
 .cands-item-buttons{
     width: 294px;
-    height: 40px;
-    margin: auto;
-    margin-top: 12px;
-    position: absolute;
-    bottom: 16px;
-    left: 50%;
-    margin-left: -147px;
+    height: 48px;
+    padding: 12px 0;
+    float: right;
 }
 .cands-item-buttons>button{
     background-color: transparent;
     float: left;
-    margin: 0 3px;
+    margin-left: 6px;
     cursor: pointer;
 }
 .cands-item-buttons>button.nor{

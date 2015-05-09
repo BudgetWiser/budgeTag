@@ -18,33 +18,26 @@ var Issue = tagModel.Issue,
  */
 
 var view = function(){
-    this.index = function(req, res){
-        res.render('test_index');
-    };
-
-    this.issue = function(req, res){
-        var issue = req.query.issue,
-            parser = new Parser();
-
-
-        parser.getBudgetByKeyword(issue, function(services){
-            res.render('test_issue', {
-                data: services
-            });
-        });
-    };
-
     this.search = function(req, res){
-        keywords = [
-            {keyword: '노인 복지'},
-            {keyword: '세월호 1주년'},
-            {keyword: '대중교통 요금 인상'},
-            {keyword: '무상 급식'},
-            {keyword: '도시 재생 종합 플랜'},
-        ];
-        res.render('tag/search', {
-            layout: 'tag/layout',
-            keywords: keywords
+        Issue.find({}, function(err, obj){
+            var issues = [];
+
+            for(var i = 0; i < obj.length; i++){
+                issues.push(obj[i].keyword);
+            }
+
+            keywords = [
+                {keyword: '노인 복지'},
+                {keyword: '세월호 1주년'},
+                {keyword: '대중교통 요금 인상'},
+                {keyword: '무상 급식'},
+                {keyword: '도시 재생 종합 플랜'},
+            ];
+            res.render('tag/search', {
+                layout: 'tag/layout',
+                keywords: keywords,
+                issues: issues
+            });
         });
     };
 
