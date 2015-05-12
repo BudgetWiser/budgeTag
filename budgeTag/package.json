@@ -21,6 +21,10 @@
         "async": "*",
         "iconv-lite": "*",
         "fs": "*",
-        "string_decoder": "*"
+        "string_decoder": "*",
+        "express-session": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "passport-local-mongoose": "*"
     }
 }

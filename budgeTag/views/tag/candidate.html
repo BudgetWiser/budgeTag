@@ -1,48 +1,37 @@
-{{#yield-title}}"{{keyword}}"로 찾은 예산 사업들{{/yield-title}}
+{{#yield-title}}{{keyword}}와 관련되어 보이는 예산 사업들{{/yield-title}}
 {{#yield-scripts}}
-<script type="text/javascript" src="/static/js/tag/candidate.js"></script>
-<script type="text/javascript">
-    $(window).load(function(){
-        var keyword = "{{keyword}}",
-            services = [];
-
-        {{#services}}
-        var service = {
-            _id: "{{_id}}",
-            name: "{{name}}",
-            categories: "{{categories}}".split(","),
-            sum: "{{sum}}".split(",")
-        };
-        services.push(service);
-        {{/services}}
-
-        Candidate.initialize(keyword, services);
-    });
-</script>
 {{/yield-scripts}}
 {{#yield-stylesheets}}
 <link rel="stylesheet" type="text/css" href="/static/css/tag/candidate.css">
 {{/yield-stylesheets}}
 {{#yield-content}}
-<div id="wrapper-keyword">
-    <h1>
-        <a href="javascript:history.back()">뒤로 가기</a>
-        <span>"{{keyword}}"</span>
-    </h1>
-</div>
-<div id="wrapper-cands">
-    <div id="subtitle-wrapper">
-        <div id="subtitle">
-            <h2>이 이슈("{{keyword}}")와 아래 예산 사업들의 <span>연관성</span>을 평가해보세요.</h2>
+<div class="container-fluid">
+    <div class="row">
+        <h2 class="title bg-primary">"{{keyword}}"&nbsp;<small>와(과) 관련된 예산 사업들을 찾아보세요!</small></h2>
+    </div>
+    <form method="POST" action="/save">
+        <input type="hidden" name="keyword" value="{{keyword}}">
+        <input type="hidden" name="user" value="{{user._id}}">
+        {{#services}}
+        <div class="row rel-row">
+            <div class="rel-info">
+                <h6>{{categories}}</h6>
+                <h4>{{name}}&nbsp;&nbsp;<small>{{sum}}</small></h4>
+            </div>
+            <div class="radio rel-btns">
+                <label class="radio-inline">
+                    <input type="radio" name="{{_id}}" value="1">관련있음
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="{{_id}}" value="0">모르겠음
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="{{_id}}" value="-1">관련없음
+                </label>
+            </div>
         </div>
-    </div>
-    <div id="cands">
-        <ul class="cands-list">
-        </ul>
-    </div>
-</div>
-<div id="wrapper-submit">
-    <button type="button" id="submit">나의 생각 제출하기</button>
+        {{/services}}
+        <input type="submit" class="btn btn-lg btn-success btn-block" value="나의 생각 제출하기">
+    </form>
 </div>
 {{/yield-content}}
-

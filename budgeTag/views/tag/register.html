@@ -1,0 +1,33 @@
+{{#yield-title}}회원 가입{{/yield-title}}
+{{#yield-content}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form method="POST" action="/register">
+                <div class="form-group">
+                    <label for="email">아이디(이메일 형식)</label>
+                    <p class="help-block">
+                        이메일에 대한 도움말
+                    </p>
+                    <input type="email" class="form-control" id="username" name="username" placeholder="이메일을 입력해주세요.">
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <p class="help-block">
+                        비밀번호에 대한 도움말
+                    </p>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요.">
+                </div>
+                <hr>
+                <p class="bg-warning" style="padding:15px;">
+                    실험에 대한 동의 내용...
+                </p>
+                <button type="submit" class="btn btn-success btn-lg btn-block">
+                    실험 동의 및 회원가입하기
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{{/yield-content}}
+

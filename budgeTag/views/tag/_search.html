@@ -1,0 +1,38 @@
+{{#yield-title}}이슈 키워드로 예산 찾기{{/yield-title}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/plugin/jquery-ui-autocomplete.min.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        var ac_list = "{{issues}}".split(',');
+
+        $('.search-input-text').autocomplete({
+            source: ac_list
+        });
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/tag/search.css">
+{{/yield-stylesheets}}
+{{#yield-content}}
+<div id="wrapper-search">
+    <div id="search-input">
+        <form action="/tag/cands">
+            <input class="search-input-text" type="text" name="keyword" placeholder='"이슈 키워드"를 입력하세요.'>
+            <input type="submit" class="search-input-button" value="예산 사업 찾기">
+        </form>
+    </div>
+    <div id="search-rcmd">
+        <ul class="search-rcmd-list">
+            {{#keywords}}
+            <li class="search-rcmd-item">
+                <a href="/tag/cands?keyword={{keyword}}">{{keyword}}</a>
+            </li>
+            {{/keywords}}
+        </ul>
+    </div>
+    <div id="search-comment">
+        이 서비스는 이슈 키워드를 통해서, 사람들이 이슈와 서울시 예산 사업들 간의 연관성을 찾고 평가할 수 있도록 도와줍니다.
+    </div>
+</div>
+{{/yield-content}}

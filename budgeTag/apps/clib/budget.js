@@ -68,10 +68,9 @@ function budget(){
         var matched_words = this.matchWords(content),
             matched_services = this.matchServices(matched_words);
 
-        var selected = select(matched_services, 12);
+        var selected = select(matched_services, 100);
 
         if(selected.indexOf(undefined) > -1){
-            console.log("newspaper didn't work well.");
             return [];
         }
 
@@ -161,7 +160,7 @@ function budget(){
             }
         }
 
-        return select(selected, 12);
+        return select(selected, 100);
     };
 };
 

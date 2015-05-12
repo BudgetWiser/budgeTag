@@ -9,6 +9,9 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     hoganExpress = require('hogan-express'),
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
     mongoose = require('mongoose');
 
 /*
@@ -16,6 +19,29 @@ var express = require('express'),
  */
 
 var app = express();
+
+/*
+ * Setup session
+ */
+
+app.use(session({
+    secret: 'budgetag',
+    resave: true,
+    saveUninitialized: true
+}));
+
+/*
+ * Setup passport
+ */
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+var User = require(path.join(__dirname, 'account/model')).User;
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 /*
  * Setup application port number
@@ -53,6 +79,7 @@ app.use(cookieParser());
  */
 
 var routes = [
+    'account/route',
     'tag/route'
     //'app_name/route'
 ];
@@ -69,6 +96,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function(){
     var models = [
+        'account/model',
         'tag/model'
         //'app_name/model'
     ];

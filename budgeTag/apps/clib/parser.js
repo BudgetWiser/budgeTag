@@ -75,8 +75,6 @@ function parser(){
                     if(decoded_html.indexOf('다.') == -1){
                         decoded_html = decoder.write(html);
                     }
-                    console.log(decoded_html.indexOf('다.') > -1);
-
                     _callback(null, decoded_html);
                 }else{
                     _callback(null, '');
@@ -85,7 +83,6 @@ function parser(){
         };
 
         async.map(links, reqURL, function(err, html){
-            console.log('----------------');
             var service_cands = [];
 
             html.forEach(function(h, i, arr){
