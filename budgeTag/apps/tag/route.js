@@ -19,7 +19,7 @@ var Issue = tagModel.Issue,
 
 var i2s = JSON.parse(fs.readFileSync(__dirname + '/../clib/data/i2s.json', 'utf8'));
 
-var keywords = ['노인 복지', '세월호 1주년', '대중교통 요금 인상'];
+var keywords = ['안전', '대기 오염(미세먼지)', '청년 실업'];
 
 /*
  * Views

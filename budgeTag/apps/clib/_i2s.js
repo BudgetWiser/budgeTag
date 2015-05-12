@@ -4,9 +4,9 @@ var express = require('express'),
     Parser = require('./parser').Parser;
 
 var issues = [
-    '세월호 1주년',
-    '노인 복지',
-    '대중교통 요금 인상'
+    '안전',
+    '대기 오염(미세먼지)',
+    '청년 실험'
 ];
 
 var parser = new Parser();

@@ -14,7 +14,7 @@ var p = 0, complete = services.length;
 services.map(function(s){
     var service = new Service({
         name: s.name,
-        sum: [s.sum, s._sum],
+        sum: [s.sum, s.sum],
         categories: s.categories
     });
 
