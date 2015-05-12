@@ -1,0 +1,22 @@
+{{#yield-title}}나의 정보{{/yield-title}}
+{{#yield-content}}
+<div class="container-fluid">
+    <div class="row">
+        <h3>{{user.username}}<small>(나의 계정)</small></h3>
+        <hr>
+        <h4>총 {{all_length}}개의 예산 사업을 태깅했습니다.</h4>
+        <h5 class="bg-info" style="display:inline-block;padding:12px;border-radius:4px;"> 전체에서 {{rank}}위 입니다.</h5>
+        <hr>
+    </div>
+    <div class="row">
+        {{#length}}
+        <div class="col-md-4">
+            <button type="button" class="btn btn-block btn-info btn-lg" style="margin: 8px;">
+                <h3>"{{issue}}"에 대해서,</h3>
+                <h4>{{length}}개의 사업을 태깅했습니다.</h4>
+            </button>
+        </div>
+        {{/length}}
+    </div>
+</div>
+{{/yield-content}}

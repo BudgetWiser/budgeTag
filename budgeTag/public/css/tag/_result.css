@@ -1,0 +1,226 @@
+html, body, #wrapper{
+    overflow: auto;
+}
+body{
+    background: #e3e6e9;
+}
+#wrapper-keyword{
+    width: 100%;
+    background: #3c99d8;
+    padding: 80px 0 40px 0;
+}
+#wrapper-keyword>h1{
+    width: 1000px;
+    height: 50px;
+    margin: 0 auto;
+    font-size: 33px;
+    line-height: 50px;
+    color: #fff;
+    padding-left: 66px;
+    background: url(/static/res/icon_tag.png) 0 0 no-repeat;
+}
+#wrapper-related{
+    width: 100%;
+    background: #e3e6e9;
+}
+#subtitle-wrapper{
+    width: 100%;
+    height: 80px;
+    background: #f1f4f7;
+}
+#subtitle{
+    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+}
+#subtitle>h2{
+    display: inline-block;
+    height: 100%;
+    font-size: 18px;
+    line-height: 80px;
+    color: #626568;
+    float: left;
+}
+#subtitle>h2>span{
+    color: #f9ae1d;
+}
+#subtitle>span{
+    display: inline-block;
+    height: 100%;
+    font-size: 16px;
+    line-height: 80px;
+    color: #91969b;
+    float: right;
+    background: url(/static/res/icon_did.png) 0 50% no-repeat;
+    padding-left: 28px;
+}
+#related{
+    width: 1020px;
+    margin: auto;
+    margin-top: 20px;
+}
+.related-list{
+    width: 100%;
+    display: inline-block;
+}
+.related-item{
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 320px;
+    height: 156px;
+    margin: 0 10px 20px 10px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+}
+.related-item>a{
+    background: #fff;
+}
+.related-item>a:hover{
+    background: #f5f7fa;
+}
+.related-item .add{
+    display: block;
+    font-size: 0;
+    width: 100%;
+    height: 90px;
+    background: url(/static/res/icon_add.png) 50% 65% no-repeat;
+    opacity: .9;
+}
+.related-item>a:hover>.add{
+    opacity: 1;
+}
+.related-item .sub{
+    display: block;
+    font-size: 0;
+    width: 100%;
+    height: 66px;
+    font-size: 16px;
+    color: #65696e;
+    text-align: center;
+}
+.related-item-rel{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.related-item-info{
+    display: inline-block;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+.related-item-category{
+    display: block;
+    width: 320px;
+    padding: 20px 16px 12px 16px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #8e969b;
+    background: #f5f7fa;
+}
+.related-item-name{
+    display: block;
+    width: 288px;
+    margin: auto;
+    margin-top: 12px;
+    font-size: 20px;
+    line-height: 26px;
+    color: #505358;
+}
+.related-item-sum{
+    display: block;
+    width: 288px;
+    margin: auto;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #3c99d8;
+}
+.related-item:hover>.related-item-rel{
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .3);
+}
+.related-item-rel-list{
+    display: block;
+    width: 294px;
+    height: 70px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+.related-item-rel-item{
+    display: block;
+    width: 92px;
+    height: 70px;
+    margin: 0 3px;
+    float: left;
+    padding-top: 30px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, .9);
+    border-radius: 4px;
+    font-size: 24px;
+    color: #686c6f;
+    background-position: 0 0px;
+    background-repeat: no-repeat;
+}
+.related-item-rel-item.agree{
+    background-image: url(/static/res/icon_agree.png);
+}
+.related-item-rel-item.disagree{
+    background-image: url(/static/res/icon_disagree.png);
+}
+.related-item-rel-item.noidea{
+    background-image: url(/static/res/icon_noidea.png);
+}
+.related-item-rel-list.on_-1>.disagree{
+    background-color: #fff4e7;
+}
+.related-item-rel-list.on_1>.agree{
+    background-color: #fff4e7;
+}
+.related-item-rel-list.on_0>.noidea{
+    background-color: #fff4e7;
+}
+.related-item.participate-true{
+    border: 2px solid #ffc154;
+}
+.related-item.participate-true .related-item-category{
+    display: block;
+    width: 316px;
+    padding: 18px 14px 12px 14px;
+}
+#wrapper-other{
+    width: 100%;
+    height: 120px;
+    background: #e3e6e9;
+    position: relative;
+}
+.other-issue{
+    width: 320px;
+    height: 60px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: #f9ae1d;
+    border-radius: 4px;
+    font-size: 20px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+.other-issue:hover{
+    background: #eca00e;
+}
+.related-item.just-your-idea{
+    opacity: .4;
+}

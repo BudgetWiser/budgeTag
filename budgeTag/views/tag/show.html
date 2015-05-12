@@ -11,7 +11,7 @@
         <h5 class="sub bg-warning">총 {{sum}}의 예산과 관련되어 있습니다.</h5>
     </div>
     {{#rels}}
-    <div class="row rel-row {{did}}">
+    <div class="row rel-row">
         <div class="rel-info">
             <h6>{{categories}}</h6>
             <h4>{{name}}&nbsp;&nbsp;<small>{{sum}}</small></h4>
@@ -23,7 +23,6 @@
         </div>
     </div>
     {{/rels}}
-    <a href="/search?keyword={{keyword}}" class="btn btn-default btn-block btn-lg">"{{keyword}}"와 관련된 사업 더 찾아보기</a>
-    <a href="/search" class="btn btn-info btn-block btn-lg">다른 이슈 알아보기</a>
+    <a href="/search?keyword={{keyword}}" class="btn btn-default btn-block btn-lg">"{{keyword}}"와 관련된 사업 찾아보기</a>
 </div>
 {{/yield-content}}

@@ -1,0 +1,64 @@
+{{#yield-title}}"{{issue.keyword}}"로 찾은 예산 사업들{{/yield-title}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/tag/result.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        var issue = {},
+            rels = [];
+
+        {{#issue}}
+            issue._id = "{{_id}}";
+            issue.keyword = "{{keyword}}";
+            issue.sum = "{{sum}}";
+        {{/issue}}
+
+        {{#rels}}
+            var rel = {};
+
+            rel._id = "{{_id}}";
+            rel.name = "{{name}}";
+            rel.sum = "{{sum}}".split(',');
+            rel.categories = "{{categories}}".split(',');
+            rel.agree = "{{agree}}";
+            rel.disagree = "{{disagree}}";
+            rel.noidea = "{{noidea}}";
+            rel.did = "{{did}}";
+            rel.rel = "{{rel}}";
+
+            rels.push(rel);
+        {{/rels}}
+
+        Result.initialize(issue, rels);
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/tag/result.css">
+{{/yield-stylesheets}}
+{{#yield-content}}
+<div id="wrapper-keyword">
+    <h1>"{{issue.keyword}}"</h1>
+</div>
+<div id="wrapper-related">
+    <div id="subtitle-wrapper">
+        <div id="subtitle">
+            <h2 class="sum">이 이슈는 총 <span>{{issue.sum}}원</span>의 예산 사업들과 연관이 있습니다.</h2>
+            <span>는 당신의 의견이 방금 반영된 사업들입니다.</span>
+        </div>
+    </div>
+    <div id="related">
+        <ul class="related-list">
+            <li class="related-item">
+                <a href="javascript:alert('개발중')">
+                    <span class="add">+</span>
+                    <span class="sub">'예산 지도'에서 다른 관련 사업<br>알아보고 탐색하기</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="wrapper-other">
+    <a class="other-issue" href="/tag/search">다른 이슈 찾아보기</a>
+</div>
+{{/yield-content}}
+

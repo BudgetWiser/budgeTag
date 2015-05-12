@@ -13,7 +13,10 @@ var userSchema = new Schema({
         issue: {type: ObjectId, ref: 'Issue'},
         type: {type: Number}
     }],
-    _checked: [[String]],
+    _checked: [{
+        service: String,
+        issue: String
+    }],
     type: {type: Number}
 });
 

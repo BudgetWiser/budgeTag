@@ -6,6 +6,7 @@ var express = require('express'),
     tagModel = require('./model'),
     accountModel = require('../account/model'),
     fs = require('fs'),
+    mw = require('../account/middleware'),
     Parser = require('../clib/parser').Parser;
 
 /*
@@ -18,17 +19,24 @@ var Issue = tagModel.Issue,
 
 var i2s = JSON.parse(fs.readFileSync(__dirname + '/../clib/data/i2s.json', 'utf8'));
 
+var keywords = ['노인 복지', '세월호 1주년', '대중교통 요금 인상'];
+
 /*
  * Views
  */
 
 var view = {};
 
+view.service = function(req, res){
+    res.render('tag/service', {
+        layout: 'tag/layout',
+        p_service: "active"
+    });
+};
+
 view.search = function(req, res){
     var user = req.user,
         keyword = req.query.keyword;
-
-    keywords = ['노인 복지', '세월호 1주년', '대중교통 요금 인상'];
 
     var query = [];
     keywords.map(function(k){
@@ -224,13 +232,129 @@ view._search = function(req, res){
                 res.render('tag/candidate', {
                     layout: 'tag/layout',
                     keyword: keyword,
-                    services: _services.slice,
+                    services: _services,
                     user: user,
                     p_search: "active"
                 });
             });
         });
     }
+};
+
+view.issues = function(req, res){
+    var keyword = req.query.keyword;
+
+    if(keywords.indexOf(keyword) > -1){
+        console.log('a');
+        view._issues(req, res);
+    }else{
+        issues = [];
+
+        keywords.map(function(k){
+            issues.push({keyword: k});
+        });
+
+        res.render('tag/results', {
+            layout: 'tag/layout',
+            issues: issues,
+            user: req.user,
+            p_issues: "active"
+        });
+    }
+};
+
+view._issues = function(req, res){
+    var keyword = req.query.keyword;
+
+    Issue.findOne({keyword: keyword}, function(err, issue){
+        if(err) return console.log('view.issues//issue call error :', err);
+
+        var services = issue.services,
+            related = [];
+
+        services.forEach(function(elm, i, arr){
+            var service = {
+                _id: elm._id,
+                name: elm.name,
+                sum: api.money(elm.sum),
+                categories: elm.categories.join(' > '),
+                agree: elm.agree,
+                disagree: elm.disagree,
+                noidea: elm.noidea
+            };
+
+            if(service.agree > service.disagree){
+                related.push(service);
+            }
+        });
+
+        related.sort(function(a, b){
+            return ((b.agree - b.disagree) - (a.agree - a.disagree));
+        });
+
+        res.render('tag/show', {
+            layout: 'tag/layout',
+            keyword: keyword,
+            rels: related,
+            sum: api.money(issue.sum),
+            user: req.user,
+            p_issues: "active"
+        });
+    });
+};
+
+view.profile = function(req, res){
+    var user = req.user;
+
+    var checked = req.user._checked, length = [];
+
+    var all_length = checked.length;
+
+    keywords.map(function(k){
+        var l = 0;
+
+        checked.map(function(c){
+            if(c.issue == k){
+                l += 1;
+            }
+        });
+
+        length.push({
+            issue: k,
+            length: l
+        });
+    });
+
+    User.find({}, function(err, obj){
+        var users = [];
+        obj.map(function(_obj){
+            users.push({
+                _id: _obj._id,
+                length: _obj._checked.length
+            });
+        });
+
+        users.sort(function(a, b){
+            return b.length - a.length;
+        });
+
+        var rank = 0;
+        console.log(user._id);
+
+        users.forEach(function(e, i, arr){
+            if(String(e._id) == String(user._id)){
+                rank = i + 1;
+            }
+        });
+        res.render('tag/profile', {
+            layout: 'tag/layout',
+            user: req.user,
+            p_profile: "active",
+            length: length,
+            all_length: all_length,
+            rank: rank
+        });
+    });
 };
 
 /*
@@ -329,7 +453,7 @@ api.save = function(req, res){
                         _obj = {
                             _id: _service._id,
                             name: _service.name,
-                            sum: 0,
+                            sum: _sum,
                             categories: _service.categories,
                             agree: 0,
                             disagree: 0,
@@ -345,7 +469,7 @@ api.save = function(req, res){
                     }
 
                     if(_obj.agree > _obj.disagree){
-                        _obj.sum += _sum;
+                        _issue.sum += _sum;
                     }
 
                     _issue.services.push(_obj);
@@ -362,9 +486,9 @@ api.save = function(req, res){
                     }
 
                     if(_issue.services[index].agree > _issue.services[index].disagree){
-                        _issue.services[index].sum += _sum;
+                        _issue.sum += _sum;
                     }else{
-                        _issue.services[index].sum -= _sum;
+                        _issue.sum -= _sum;
                     }
                 }
             });
@@ -382,9 +506,10 @@ api.save = function(req, res){
                             type: rels[_service._id]
                         });
 
-                        _user._checked.push(
-                            [_issue.keyword, _service.name]
-                        );
+                        _user._checked.push({
+                            issue: _issue.keyword,
+                            service: _service.name
+                        });
                     });
 
                     _user.save(function(____err){
@@ -399,7 +524,45 @@ api.save = function(req, res){
 };
 
 api.result = function(req, res, keyword, rels){
-    console.log(req.user);
+    Issue.findOne({keyword: keyword}, function(err, issue){
+        if(err) return console.log('api.result//issue call error :', err);
+
+        var services = issue.services,
+            related = [];
+
+        services.forEach(function(elm, i, arr){
+            var service = {
+                _id: elm._id,
+                name: elm.name,
+                sum: api.money(elm.sum),
+                categories: elm.categories.join(' > '),
+                agree: elm.agree,
+                disagree: elm.disagree,
+                noidea: elm.noidea
+            };
+
+            if(rels[elm._id] != undefined){
+                service.did = 'just-did_' + String(rels[elm._id]);
+                related.push(service);
+            }else{
+                if(service.agree > service.disagree){
+                    related.push(service);
+                }
+            }
+        });
+
+        related.sort(function(a, b){
+            return ((b.agree - b.disagree) - (a.agree - a.disagree));
+        });
+
+        res.render('tag/result', {
+            layout: 'tag/layout',
+            keyword: keyword,
+            rels: related,
+            sum: api.money(issue.sum),
+            user: req.user
+        });
+    });
 };
 
 
@@ -411,10 +574,13 @@ function setup(app){
     app.get('/', function(req, res){res.redirect('/search')});
 
     //view
-    app.get('/search', view.search);
+    app.get('/search', mw.isAuth, view.search);
+    app.get('/issues', view.issues);
+    app.get('/profile', mw.isAuth, view.profile);
+    app.get('/service', view.service);
 
     //api
-    app.post('/save', api.save);
+    app.post('/save', mw.isAuth, api.save);
 }
 
 module.exports = setup;

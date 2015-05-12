@@ -14,7 +14,7 @@ var issueSchema = new Schema({
     services: [{
         _id: String,
         name: String,
-        sum: [Number],
+        sum: Number,
         categories: [String],
         agree: Number,
         disagree: Number,
