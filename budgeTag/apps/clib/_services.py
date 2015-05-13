@@ -17,7 +17,7 @@ for line in data:
     if(line[8].strip().isdigit()):
         obj = {
             'name': line[7].strip(),
-            'sum': line[8].strip(),
+            'sum': line[8].strip() * 1000,
             'categories': [
                 line[2].strip(),
                 line[3].strip(),
