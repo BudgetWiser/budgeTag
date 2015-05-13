@@ -30,7 +30,8 @@ var view = {};
 view.service = function(req, res){
     res.render('tag/service', {
         layout: 'tag/layout',
-        p_service: "active"
+        p_service: "active",
+	user: req.user
     });
 };
 
