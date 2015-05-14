@@ -17,6 +17,17 @@ view.login = function(req, res){
         res.redirect('back');
     }else{
         res.render('tag/login', {
+            error: req.query.error,
+            layout: 'tag/layout'
+        });
+    }
+};
+
+view.agree = function(req, res){
+    if(req.user){
+        res.redirect('back');
+    }else{
+        res.render('tag/bregister', {
             layout: 'tag/layout'
         });
     }
@@ -27,7 +38,9 @@ view.register = function(req, res){
         res.redirect('back');
     }else{
         res.render('tag/register', {
-            layout: 'tag/layout'
+            layout: 'tag/layout',
+            key_error: req.query.key_error,
+            email_error: req.query.email_error
         });
     }
 };
@@ -38,10 +51,10 @@ api.login = function(req, res){
     passport.authenticate('local', function(err, user, info){
         if(err){
             console.log(err);
-            return res.redirect('/login');
+            return res.redirect('/login?error=true');
         }
         if(!user){
-            return res.redirect('/login');
+            return res.redirect('/login?error=true');
         }
         req.login(user, function(err){
             if(err){
@@ -60,32 +73,38 @@ api.logout = function(req, res){
 
 api.register = function(req, res){
     var username = req.body.username,
-        password = req.body.password;
+        password = req.body.password,
+        key = req.body.key;
 
-    User.register(
-        new User({
-            username: username,
-            type: typeNumber
-        }),
-        password,
-        function(err, account){
-            typeNumber += 1;
-            if(typeNumber > 2){
-                typeNumber = 0;
+    if(key == 'BudgetWiser2015'){
+        User.register(
+            new User({
+                username: username,
+                type: typeNumber
+            }),
+            password,
+            function(err, account){
+                typeNumber += 1;
+                if(typeNumber > 2){
+                    typeNumber = 0;
+                }
+                if(err){
+                    console.log(err);
+                    return res.redirect('/register?email_error=true');
+                }else{
+                    api.login(req, res);
+                }
             }
-            if(err){
-                console.log(err);
-                return res.redirect('/register');
-            }else{
-                api.login(req, res);
-            }
-        }
-    );
+        );
+    }else{
+        res.redirect('/register?key_error=true');
+    }
 };
 
 function setup(app){
     app.get('/login', view.login);
     app.get('/register', view.register);
+    app.get('/agree', view.agree);
     app.get('/logout', api.logout);
 
     app.post('/login', api.login);

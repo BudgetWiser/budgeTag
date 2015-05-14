@@ -2,30 +2,42 @@
 {{#yield-content}}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-8 col-md-offset-2">
             <h3>회원가입</h3>
             <hr>
+            {{#key_error}}
+            <p class="bg-danger">회원가입 코드를 다시 확인해주세요.</p>
+            {{/key_error}}
+            {{#email_error}}
+            <p class="bg-danger">이미 가입된 이메일입니다.</p>
+            {{/email_error}}
             <form method="POST" action="/register">
-                <div class="form-group">
+                <div class="form-group {{#key_error}}has-error{{/key_error}}">
+                    <label for="key">회원가입 코드</label>
+                    <p class="help-block">
+                    <a href="https://qtrial2014.az1.qualtrics.com/SE/?SID=SV_0Ai74xuYQrCJDtr" target="_blank" class="btn btn-danger" style="height:24px;padding-top:0;padding-bottom:0;line-height:24px;margin-right:4px;">실험과제 전 설문조사</a>를 하고, 회원가입 코드를 받으세요.
+                    </p>
+                    <input type="text" class="form-control" id="key" name="key" placeholder="회원가입 코드를 입력해주세요.">
+                </div>
+                <div class="form-group {{#email_error}}has-error{{/email_error}}">
                     <label for="email">아이디(이메일 형식)</label>
                     <p class="help-block">
-                        이메일에 대한 도움말
+                        설문 조사에서 사용하신 이메일과 동일한 이메일을 적어주세요. (그 어떠한 스팸 메일도 보내지 않습니다.)
                     </p>
                     <input type="email" class="form-control" id="username" name="username" placeholder="이메일을 입력해주세요.">
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
                     <p class="help-block">
-                        비밀번호에 대한 도움말
+                        한 번 설정하면 바꿀 수 없으니, 신중하게 설정해주세요.
                     </p>
                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요.">
                 </div>
                 <hr>
-                <p class="bg-warning" style="padding:15px;">
-                    실험에 대한 동의 내용...
-                </p>
+                <p class="text-danger">회원가입정보(아이디와 비밀번호)는 외부로 절대 유출되지 않으며 실험참가비 지급 후 (2015년 5월 31일 이전) 모두 폐기됩니다.</p>
+                <hr>
                 <button type="submit" class="btn btn-success btn-lg btn-block">
-                    실험 동의 및 회원가입하기
+                    회원 가입하기
                 </button>
             </form>
         </div>

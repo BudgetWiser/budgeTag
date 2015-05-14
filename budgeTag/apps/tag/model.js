@@ -29,7 +29,8 @@ var issueSchema = new Schema({
 var serviceSchema = new Schema({
     name: String,
     sum: [Number],
-    categories: [String]
+    categories: [String],
+    sections: [String]
 });
 
 /*

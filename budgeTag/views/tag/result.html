@@ -7,23 +7,13 @@
 {{#yield-content}}
 <div class="container-fluid">
     <div class="row">
-        <h2 class="title bg-info">"{{keyword}}"&nbsp;<small>와(과) 관련된 예산 사업들</small></h2>
-        <h5 class="sub bg-warning">총 {{sum}}의 예산과 관련되어 있습니다.</h5>
+        <h2 class="title bg-info">"{{keyword}}"&nbsp;<small>와(과) 관련이 있다고 분류된 서울시 예산 사업의 금액은 <b>총 {{sum}}</b> 규모입니다.</small></h2>
+        <h4 class="sub bg-warning">당신이 방금 분류한 예산 금액은 {{my_sum}} 입니다.<br>
+            (이 이슈에 대해, 이제까지 {{count}}개의 서울시 예산 사업을 분류했습니다.)
+        </h4>
     </div>
-    {{#rels}}
-    <div class="row rel-row {{did}}">
-        <div class="rel-info">
-            <h6>{{categories}}</h6>
-            <h4>{{name}}&nbsp;&nbsp;<small>{{sum}}</small></h4>
-        </div>
-        <div class="rel-rels">
-            <button type="button" class="btn btn-success" disabled="disabled">관련있음 {{agree}}명</button>
-            <button type="button" class="btn btn-warning" disabled="disabled">모르겠음 {{noidea}}명</button>
-            <button type="button" class="btn btn-danger" disabled="disabled">관련없음 {{disagree}}명</button>
-        </div>
-    </div>
-    {{/rels}}
-    <a href="/search?keyword={{keyword}}" class="btn btn-default btn-block btn-lg">"{{keyword}}"와 관련된 사업 더 찾아보기</a>
+    <a href="/search?keyword={{keyword}}" class="btn btn-info btn-block btn-lg">"{{keyword}}"와 관련된 사업 더 찾아보기</a>
     <a href="/search" class="btn btn-info btn-block btn-lg">다른 이슈 알아보기</a>
+    <p class="text-danger"><b>각 이슈당 50개 이상씩 분류 뒤에 “실험과제 후 설문조사” 링크가 화면 상단에 나타나며 이 설문까지 모두 마쳐주셔야 실험참가비 지급이 가능합니다.</b></p>
 </div>
 {{/yield-content}}

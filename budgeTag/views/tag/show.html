@@ -7,9 +7,12 @@
 {{#yield-content}}
 <div class="container-fluid">
     <div class="row">
-        <h2 class="title bg-info">"{{keyword}}"&nbsp;<small>와(과) 관련된 예산 사업들</small></h2>
-        <h5 class="sub bg-warning">총 {{sum}}의 예산과 관련되어 있습니다.</h5>
+        <h2 class="title bg-info">"{{keyword}}"&nbsp;<small>와(과) 관련된 서울시 예산 사업들</small></h2>
+        <h5 class="sub bg-warning">총 {{sum}}의 서울시 예산과 관련되어 있습니다.</h5>
     </div>
+    <hr>
+    <a href="/search?keyword={{keyword}}" class="btn btn-info btn-block btn-lg">"{{keyword}}"와 관련된 사업 나도 찾아보기</a>
+    <hr>
     {{#rels}}
     <div class="row rel-row">
         <div class="rel-info">
@@ -23,6 +26,7 @@
         </div>
     </div>
     {{/rels}}
-    <a href="/search?keyword={{keyword}}" class="btn btn-default btn-block btn-lg">"{{keyword}}"와 관련된 사업 찾아보기</a>
+    <hr>
+    <a href="/search?keyword={{keyword}}" class="btn btn-info btn-block btn-lg">"{{keyword}}"와 관련된 사업 나도 찾아보기</a>
 </div>
 {{/yield-content}}

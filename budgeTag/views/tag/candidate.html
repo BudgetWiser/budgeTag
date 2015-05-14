@@ -1,5 +1,20 @@
 {{#yield-title}}{{keyword}}와 관련되어 보이는 예산 사업들{{/yield-title}}
 {{#yield-scripts}}
+<script type="text/javascript">
+    $(window).load(function(){
+        var submit = $('input[type="submit"]');
+
+        $(submit).click(function(e){
+            var checked = $('input:checked').length;
+            console.log(checked);
+
+            if(checked == 0){
+                alert("아무것도 체크하지 않으셨어요. 다시 확인해주세요.");
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 {{/yield-scripts}}
 {{#yield-stylesheets}}
 <link rel="stylesheet" type="text/css" href="/static/css/tag/candidate.css">
@@ -7,31 +22,38 @@
 {{#yield-content}}
 <div class="container-fluid">
     <div class="row">
-        <h2 class="title bg-primary">"{{keyword}}"&nbsp;<small>와(과) 관련된 예산 사업들을 찾아보세요!</small></h2>
+        <h2 class="title bg-primary">"{{keyword}}"&nbsp;<small>와(과) 관련된 서울시 예산 사업들을 찾아보세요!</small></h2>
+        <ol type="i">
+            <li>예를 들어 '소방차량 유지관리'사업이 '{{keyword}}' 이슈와 관련이 있다고 생각하면 &lt;관련있음&gt;을 클릭하시면 됩니다.</li>
+            <li>특정 이슈와 관련된 총 예산 규모를 파악하려면 관련있는 사업 뿐만 아니라 관련없는 사업을 찾는 것도 중요합니다 ^^ 그래서 살펴보신 사업의 “총 개수”가 분류 기여도로 계산됩니다.</li>
+        </ol>
     </div>
+    <hr>
     <form method="POST" action="/save">
         <input type="hidden" name="keyword" value="{{keyword}}">
         <input type="hidden" name="user" value="{{user._id}}">
         {{#services}}
         <div class="row rel-row">
             <div class="rel-info">
-                <h6>{{categories}}</h6>
-                <h4>{{name}}&nbsp;&nbsp;<small>{{sum}}</small></h4>
+                <h6 style="font-weight:bold;">{{categories}}</h6>
+                <h4>{{name}}&nbsp;&nbsp;<small style="font-size:100%;color:#d9534f;font-weight:bold;background:url(/static/res/icon_money.png) 0 0 no-repeat;padding-left:30px;">{{sum}}</small></h4>
             </div>
-            <div class="radio rel-btns">
+            <div class="radio rel-btns" style="margin-left:12px;float:left;width:100%;margin-top:4px;margin-bottom:12px;">
                 <label class="radio-inline">
                     <input type="radio" name="{{_id}}" value="1">관련있음
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="{{_id}}" value="0">모르겠음
+                    <input type="radio" name="{{_id}}" value="0">아리송함
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="{{_id}}" value="-1" checked="checked">관련없음
+                    <input type="radio" name="{{_id}}" value="-1">관련없음
                 </label>
             </div>
         </div>
         {{/services}}
+        <hr>
         <input type="submit" class="btn btn-lg btn-success btn-block" value="나의 생각 제출하기">
+        <!--<p class="text-danger"><b>의견 감사드립니다 ^^ 혹시 잘 살펴보지 않으시고 빠르게 “나의 생각 제출하기”를 누르신 경우 연구진의 판단 하에 실험참가가 무효화될 수 있으니 의미있는 연구 결과를 얻을 수 있도록 신중한 참여 부탁드립니다 ^^</b></p>-->
     </form>
 </div>
 {{/yield-content}}

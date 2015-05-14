@@ -1,14 +1,17 @@
-{{#yield-title}}이슈 키워드와 관련된 예산 사업들{{/yield-title}}
+{{#yield-title}}이슈별 예산 집계 현황{{/yield-title}}
 {{#yield-content}}
 <div class="container-fluid">
     <div class="row">
-        <h3>이슈와 예산</h3>
+        <h3>이슈별 예산 집계 현황</h3>
+        <ol type="i">
+            <li>이슈를 선택하시면 현재까지 모든 참여자들이 분류한 이슈별 예산 현황을 “예산지도”에서 보실 수 있습니다.</li>
+        </ol>
         <hr>
     </div>
     <div class="row">
         {{#issues}}
         <div class="col-md-4">
-            <a class="vertical-center btn btn-info btn-lg btn-block" href="/issues?keyword={{keyword}}" style="height: 100px; line-height: 100px; padding: 0; margin-top: 10px;">{{keyword}}</a>
+            <a class="vertical-center btn btn-info btn-lg btn-block" href="http://budgetmap.budgetwiser.org/?issue={{keyword}}" target="_blank" style="height: 100px; line-height: 100px; padding: 0; margin-top: 10px;">{{keyword}}</a>
         </div>
         {{/issues}}
     </div>

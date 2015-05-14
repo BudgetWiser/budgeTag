@@ -4,9 +4,9 @@ var express = require('express'),
     Parser = require('./parser').Parser;
 
 var issues = [
-    '안전',
-    '대기 오염(미세먼지)',
-    '청년 실험'
+    '공공 안전',
+    '대기 오염(미세먼지 등)',
+    '청년 실업'
 ];
 
 var parser = new Parser();

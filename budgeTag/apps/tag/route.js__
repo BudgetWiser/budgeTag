@@ -28,19 +28,11 @@ var keywords = ['공공 안전', '대기 오염(미세먼지 등)', '청년 실�
 var view = {};
 
 view.service = function(req, res){
-    if(req.user){
-        api.rank(req, res, 'tag/service', {
-            layout: 'tag/layout',
-            p_service: "active",
-            user: req.user
-        });
-    }else{
-        res.render('tag/service', {
-            layout: 'tag/layout',
-            p_service: "active",
-            user: req.user
-        });
-    }
+    res.render('tag/service', {
+        layout: 'tag/layout',
+        p_service: "active",
+        user: req.user
+    });
 };
 
 view.search = function(req, res){
@@ -76,21 +68,12 @@ view.search = function(req, res){
             issues.push({keyword: k});
         });
 
-        if(req.user){
-            api.rank(req, res, 'tag/search', {
-                layout: 'tag/layout',
-                issues: issues,
-                user: user,
-                p_search: "active"
-            });
-        }else{
-            res.render('tag/search', {
-                layout: 'tag/layout',
-                issues: issues,
-                user: user,
-                p_search: "active"
-            });
-        }
+        res.render('tag/search', {
+            layout: 'tag/layout',
+            issues: issues,
+            user: user,
+            p_search: "active"
+        });
     }
 };
 
@@ -100,6 +83,7 @@ view._search = function(req, res){
         issues = i2s;
 
     var usertype = user.type;
+    console.log(usertype);
 
     var checked = [];
 
@@ -109,6 +93,8 @@ view._search = function(req, res){
                 checked.push(_checked.service);
             }
         });
+
+        console.log(checked);
 
         if(usertype == 0){
             //random mode
@@ -133,23 +119,13 @@ view._search = function(req, res){
 
                 api.shuffle(_services);
 
-                if(req.user){
-                    api.rank(req, res, 'tag/candidate', {
-                        layout: 'tag/layout',
-                        keyword: keyword,
-                        services: _services.slice(0, 10),
-                        user: user,
-                        p_search: "active"
-                    });
-                }else{
-                    res.render('tag/candidate', {
-                        layout: 'tag/layout',
-                        keyword: keyword,
-                        services: _services.slice(0, 10),
-                        user: user,
-                        p_search: "active"
-                    });
-                }
+                res.render('tag/candidate', {
+                    layout: 'tag/layout',
+                    keyword: keyword,
+                    services: _services.slice(0, 10),
+                    user: user,
+                    p_search: "active"
+                });
             });
         }else if(usertype == 1){
             //tf-idf mode
@@ -184,24 +160,13 @@ view._search = function(req, res){
 
                 if(_services.length >= 10){
                     api.shuffle(_services);
-
-                    if(req.user){
-                        api.rank(req, res, 'tag/candidate', {
-                            layout: 'tag/layout',
-                            keyword: keyword,
-                            services: _services.slice(0, 10),
-                            user: user,
-                            p_search: "active"
-                        });
-                    }else{
-                        res.render('tag/candidate', {
-                            layout: 'tag/layout',
-                            keyword: keyword,
-                            services: _services.slice(0, 10),
-                            user: user,
-                            p_search: "active"
-                        });
-                    }
+                    res.render('tag/candidate', {
+                        layout: 'tag/layout',
+                        keyword: keyword,
+                        services: _services.slice(0, 10),
+                        user: user,
+                        p_search: "active"
+                    });
                 }else{
                     Service.find({}, function(err, obj){
                         _services = [];
@@ -224,23 +189,13 @@ view._search = function(req, res){
 
                         api.shuffle(_services);
 
-                        if(req.user){
-                            api.rank(req, res, 'tag/candidate', {
-                                layout: 'tag/layout',
-                                keyword: keyword,
-                                services: _services.slice(0, 10),
-                                user: user,
-                                p_search: "active"
-                            });
-                        }else{
-                            res.render('tag/candidate', {
-                                layout: 'tag/layout',
-                                keyword: keyword,
-                                services: _services.slice(0, 10),
-                                user: user,
-                                p_search: "active"
-                            });
-                        }
+                        res.render('tag/candidate', {
+                            layout: 'tag/layout',
+                            keyword: keyword,
+                            services: _services.slice(0, 10),
+                            user: user,
+                            p_search: "active"
+                        });
                     });
                 }
             });
@@ -312,23 +267,13 @@ view._search = function(req, res){
 
                         _services = _services.concat(__services);
 
-                        if(req.user){
-                            api.rank(req, res, 'tag/candidate', {
-                                layout: 'tag/layout',
-                                keyword: keyword,
-                                services: _services,
-                                user: user,
-                                p_search: "active"
-                            });
-                        }else{
-                            res.render('tag/candidate', {
-                                layout: 'tag/layout',
-                                keyword: keyword,
-                                services: _services,
-                                user: user,
-                                p_search: "active"
-                            });
-                        }
+                        res.render('tag/candidate', {
+                            layout: 'tag/layout',
+                            keyword: keyword,
+                            services: _services,
+                            user: user,
+                            p_search: "active"
+                        });
                     }else{
                         Service.find({}, function(err, obj){
                             _services = [];
@@ -351,23 +296,13 @@ view._search = function(req, res){
 
                             api.shuffle(_services);
 
-                            if(req.user){
-                                api.rank(req, res, 'tag/candidate', {
-                                    layout: 'tag/layout',
-                                    keyword: keyword,
-                                    services: _services.slice(0, 10),
-                                    user: user,
-                                    p_search: "active"
-                                });
-                            }else{
-                                res.render('tag/candidate', {
-                                    layout: 'tag/layout',
-                                    keyword: keyword,
-                                    services: _services.slice(0, 10),
-                                    user: user,
-                                    p_search: "active"
-                                });
-                            }
+                            res.render('tag/candidate', {
+                                layout: 'tag/layout',
+                                keyword: keyword,
+                                services: _services.slice(0, 10),
+                                user: user,
+                                p_search: "active"
+                            });
                         });
                     }
                 });
@@ -380,6 +315,7 @@ view.issues = function(req, res){
     var keyword = req.query.keyword;
 
     if(keywords.indexOf(keyword) > -1){
+        console.log('a');
         view._issues(req, res);
     }else{
         issues = [];
@@ -388,21 +324,12 @@ view.issues = function(req, res){
             issues.push({keyword: k});
         });
 
-        if(req.user){
-            api.rank(req, res, 'tag/results', {
-                layout: 'tag/layout',
-                issues: issues,
-                user: req.user,
-                p_issues: "active"
-            });
-        }else{
-            res.render('tag/results', {
-                layout: 'tag/layout',
-                issues: issues,
-                user: req.user,
-                p_issues: "active"
-            });
-        }
+        res.render('tag/results', {
+            layout: 'tag/layout',
+            issues: issues,
+            user: req.user,
+            p_issues: "active"
+        });
     }
 };
 
@@ -435,25 +362,14 @@ view._issues = function(req, res){
             return ((b.agree - b.disagree) - (a.agree - a.disagree));
         });
 
-        if(req.user){
-            api.rank(req, res, 'tag/show', {
-                layout: 'tag/layout',
-                keyword: keyword,
-                rels: related,
-                sum: api.money(issue.sum),
-                user: req.user,
-                p_issues: "active"
-            });
-        }else{
-            res.render('tag/show', {
-                layout: 'tag/layout',
-                keyword: keyword,
-                rels: related,
-                sum: api.money(issue.sum),
-                user: req.user,
-                p_issues: "active"
-            });
-        }
+        res.render('tag/show', {
+            layout: 'tag/layout',
+            keyword: keyword,
+            rels: related,
+            sum: api.money(issue.sum),
+            user: req.user,
+            p_issues: "active"
+        });
     });
 };
 
@@ -479,23 +395,36 @@ view.profile = function(req, res){
         });
     });
 
-    if(req.user){
-        api.rank(req, res, 'tag/profile', {
-            layout: 'tag/layout',
-            user: req.user,
-            p_profile: "active",
-            length: length,
-            all_length: all_length,
+    User.find({}, function(err, obj){
+        var users = [];
+        obj.map(function(_obj){
+            users.push({
+                _id: _obj._id,
+                length: _obj._checked.length
+            });
         });
-    }else{
+
+        users.sort(function(a, b){
+            return b.length - a.length;
+        });
+
+        var rank = 0;
+        console.log(user._id);
+
+        users.forEach(function(e, i, arr){
+            if(String(e._id) == String(user._id)){
+                rank = i + 1;
+            }
+        });
         res.render('tag/profile', {
             layout: 'tag/layout',
             user: req.user,
             p_profile: "active",
             length: length,
             all_length: all_length,
+            rank: rank
         });
-    }
+    });
 };
 
 /*
@@ -539,7 +468,7 @@ api.money = function(m){
     if(str_set.length > 0){
         str_set = '약 ' + str_set.join(' ') + '원';
     }else{
-        str_set = '0원'
+        str_set = ' - '
     }
 
     return str_set;
@@ -559,6 +488,7 @@ api.save = function(req, res){
             rels[key] = data[key];
         }
     });
+    console.log(services);
 
     Issue.findOne({'keyword': keyword}, function(err, _issue){
         if(err) return console.log('find issue error: ', err);
@@ -608,6 +538,10 @@ api.save = function(req, res){
                         _obj.noidea += 1;
                     }
 
+                    if(_obj.agree > _obj.disagree){
+                        _issue.sum += _sum;
+                    }
+
                     _issue.services.push(_obj);
                 }else{
                     //add relation score to the existing related service.
@@ -620,17 +554,14 @@ api.save = function(req, res){
                     }else{
                         _issue.services[index].noidea += 1;
                     }
+
+                    if(_issue.services[index].agree > _issue.services[index].disagree){
+                        _issue.sum += _sum;
+                    }else{
+                        _issue.sum -= _sum;
+                    }
                 }
             });
-
-            var issue_sum = 0;
-            _issue.services.map(function(_s){
-                if(_s.agree > _s.disagree){
-                    issue_sum += parseInt(_s.sum);
-                }
-            });
-
-            _issue.sum = issue_sum;
 
             _issue.save(function(__err){
                 if(__err) return console.log('issue save error: ', __err);
@@ -704,79 +635,15 @@ api.result = function(req, res, keyword, rels){
             return ((b.agree - b.disagree) - (a.agree - a.disagree));
         });
 
-        if(req.user){
-            api.rank(req, res, 'tag/result', {
-                layout: 'tag/layout',
-                keyword: keyword,
-                rels: related,
-                sum: api.money(issue.sum),
-                my_sum: api.money(my_sum),
-                user: req.user,
-                count: count + (Object.keys(rels)).length,
-                p_search: "active"
-            });
-        }else{
-            res.render('tag/result', {
-                layout: 'tag/layout',
-                keyword: keyword,
-                rels: related,
-                sum: api.money(issue.sum),
-                my_sum: api.money(my_sum),
-                user: req.user,
-                count: count,
-                p_search: "active"
-            });
-        }
-    });
-};
-
-api.rank = function(req, res, page, opt){
-    var user = req.user;
-
-    var checked = user._checked;
-    var l = [0, 0, 0];
-    keywords.forEach(function(k, i, arr){
-        checked.map(function(c){
-            if(c.issue == k){
-                l[i] += 1;
-            }
+        res.render('tag/result', {
+            layout: 'tag/layout',
+            keyword: keyword,
+            rels: related,
+            sum: api.money(issue.sum),
+            my_sum: api.money(my_sum),
+            user: req.user,
+            count: count
         });
-    });
-
-    User.find({}, function(err, _users){
-        var users = [], rank = 0;
-
-        _users.map(function(_user){
-            users.push({
-                _id: _user._id,
-                length: _user._checked.length
-            });
-        });
-
-        users.sort(function(a, b){
-            return b.length - a.length;
-        });
-
-        users.forEach(function(u, i, arr){
-            if(String(u._id) == String(user._id)){
-                rank = i + 1;
-            }
-        });
-
-        var survey = 'opened';
-        l.map(function(_l){
-            if(_l < 50){
-                survey = '';
-            }
-        });
-
-        opt['rank'] = rank;
-        opt['first'] = users[0].length;
-        if(survey != ''){
-            opt['survey'] = 'opened';
-        }
-
-        res.render(page, opt);
     });
 };
 

@@ -15,7 +15,8 @@ services.map(function(s){
     var service = new Service({
         name: s.name,
         sum: [s.sum, s.sum],
-        categories: s.categories
+        categories: s.categories,
+        sections: s.sections
     });
 
     service.save(function(err){

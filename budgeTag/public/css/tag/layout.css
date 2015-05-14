@@ -55,6 +55,17 @@
 .navbar-inverse .navbar-nav>li>a:hover{
     background: #2c6190;
 }
+#rank-btn, #survey-btn{
+    width: 90%;
+    margin: 10px auto;
+    color: #fff;
+}
+#rank-btn:hover{
+    background: #d43f3a;
+}
+#survey-btn:hover{
+    background: #d58512;
+}
 @media (min-width: 768px){
     .navbar-right{
         display: none!important;
