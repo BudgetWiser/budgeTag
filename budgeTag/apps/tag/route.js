@@ -164,26 +164,34 @@ view._search = function(req, res){
 
             Service.find({$or: query}, function(err, obj){
                 var _services = [];
+                var rearr = [];
+                query.map(function(_q){
+                    obj.map(function(_obj){
+                        if(_q.name == _obj.name){
+                            rearr.push(_obj);
+                        }
+                    });
+                });
 
-                obj.map(function(_obj){
-                    if(checked.indexOf(_obj._id) == -1){
-                        var _sum = _obj.sum[0];
+                rearr.map(function(_rearr){
+                    if(checked.indexOf(_rearr._id) == -1){
+                        var _sum = _rearr.sum[0];
                         if(_sum == 0){
-                            _sum = _obj.sum[1];
+                            _sum = _rearr.sum[1];
                         }
                         _sum = api.money(_sum);
 
                         _services.push({
-                            _id: _obj._id,
-                            name: _obj.name,
+                            _id: _rearr._id,
+                            name: _rearr.name,
                             sum: _sum,
-                            categories: _obj.categories.join(' > ')
+                            categories: _rearr.categories.join(' > ')
                         });
                     }
                 });
 
                 if(_services.length >= 10){
-                    api.shuffle(_services);
+                    //api.shuffle(_services);
 
                     if(req.user){
                         api.rank(req, res, 'tag/candidate', {
@@ -222,7 +230,7 @@ view._search = function(req, res){
                             }
                         });
 
-                        //api.shuffle(_services);
+                        api.shuffle(_services);
 
                         if(req.user){
                             api.rank(req, res, 'tag/candidate', {
@@ -257,21 +265,29 @@ view._search = function(req, res){
 
             Service.find({$or: query}, function(err, obj){
                 var _services = [];
+                var rearr = [];
+                query.map(function(_q){
+                    obj.map(function(_obj){
+                        if(_q.name == _obj.name){
+                            rearr.push(_obj);
+                        }
+                    });
+                });
 
-                obj.map(function(_obj){
-                    if(checked.indexOf(_obj._id) == -1){
-                        checked.push(_obj._id);
-                        var _sum = _obj.sum[0];
+                rearr.map(function(_rearr){
+                    if(checked.indexOf(_rearr._id) == -1){
+                        checked.push(_rearr._id);
+                        var _sum = _rearr.sum[0];
                         if(_sum == 0){
-                            _sum = _obj.sum[1];
+                            _sum = _rearr.sum[1];
                         }
                         _sum = api.money(_sum);
 
                         _services.push({
-                            _id: _obj._id,
-                            name: _obj.name,
+                            _id: _rearr._id,
+                            name: _rearr.name,
                             sum: _sum,
-                            categories: _obj.categories.join(' > ')
+                            categories: _rearr.categories.join(' > ')
                         });
                     }
                 });
@@ -306,7 +322,7 @@ view._search = function(req, res){
                     });
 
                     if(_services >= 7){
-                        api.shuffle(__services);
+                        //api.shuffle(__services);
 
                         var __services = __services.slice(0, 3);
 
