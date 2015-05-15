@@ -294,7 +294,7 @@ view._search = function(req, res){
 
                 //api.shuffle(_services);
 
-                var _services = _services.slice(0, 7);
+                var _services = _services.slice(0, 6);
                 /*
                 _service.map(function(_service){
                     checked.push(_service._id);
@@ -321,10 +321,10 @@ view._search = function(req, res){
                         }
                     });
 
-                    if(_services >= 7){
+                    if(_services >= 6){
                         //api.shuffle(__services);
 
-                        var __services = __services.slice(0, 3);
+                        var __services = __services.slice(0, 4);
 
                         _services = _services.concat(__services);
 
