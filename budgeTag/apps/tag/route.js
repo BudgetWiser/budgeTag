@@ -222,7 +222,7 @@ view._search = function(req, res){
                             }
                         });
 
-                        api.shuffle(_services);
+                        //api.shuffle(_services);
 
                         if(req.user){
                             api.rank(req, res, 'tag/candidate', {
@@ -276,7 +276,7 @@ view._search = function(req, res){
                     }
                 });
 
-                api.shuffle(_services);
+                //api.shuffle(_services);
 
                 var _services = _services.slice(0, 7);
                 /*
