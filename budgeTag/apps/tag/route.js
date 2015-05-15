@@ -106,7 +106,7 @@ view._search = function(req, res){
     Issue.findOne({keyword: keyword}, function(ierr, iobj){
         user.checked.map(function(_checked){
             if(String(_checked.issue) == String(iobj._id)){
-                checked.push(_checked.service);
+                checked.push(String(_checked.service));
             }
         });
 
@@ -115,7 +115,7 @@ view._search = function(req, res){
             Service.find({}, function(err, obj){
                 _services = [];
                 obj.map(function(_obj){
-                    if(checked.indexOf(_obj._id) == -1){
+                    if(checked.indexOf(String(_obj._id)) == -1){
                         var _sum = _obj.sum[0];
                         if(_sum == 0){
                             _sum = _obj.sum[1];
@@ -174,7 +174,7 @@ view._search = function(req, res){
                 });
 
                 rearr.map(function(_rearr){
-                    if(checked.indexOf(_rearr._id) == -1){
+                    if(checked.indexOf(String(_rearr._id)) == -1){
                         var _sum = _rearr.sum[0];
                         if(_sum == 0){
                             _sum = _rearr.sum[1];
@@ -211,21 +211,21 @@ view._search = function(req, res){
                         });
                     }
                 }else{
-                    Service.find({}, function(err, obj){
+                    Service.find({}, function(err, __obj){
                         _services = [];
-                        obj.map(function(_obj){
-                            if(checked.indexOf(_obj._id) == -1){
-                                var _sum = _obj.sum[0];
+                        __obj.map(function(___obj){
+                            if(checked.indexOf(String(___obj._id)) == -1){
+                                var _sum = ___obj.sum[0];
                                 if(_sum == 0){
-                                    _sum = _obj.sum[1];
+                                    _sum = ___obj.sum[1];
                                 }
                                 _sum = api.money(_sum);
 
                                 _services.push({
-                                    _id: _obj._id,
-                                    name: _obj.name,
+                                    _id: ___obj._id,
+                                    name: ___obj.name,
                                     sum: _sum,
-                                    categories: _obj.categories.join(' > ')
+                                    categories: ___obj.categories.join(' > ')
                                 });
                             }
                         });
@@ -275,7 +275,7 @@ view._search = function(req, res){
                 });
 
                 rearr.map(function(_rearr){
-                    if(checked.indexOf(_rearr._id) == -1){
+                    if(checked.indexOf(String(_rearr._id)) == -1){
                         checked.push(_rearr._id);
                         var _sum = _rearr.sum[0];
                         if(_sum == 0){
@@ -305,7 +305,7 @@ view._search = function(req, res){
                     var __services = [];
 
                     _obj.map(function(__obj){
-                        if(checked.indexOf(__obj._id) == -1){
+                        if(checked.indexOf(String(__obj._id)) == -1){
                             var _sum = __obj.sum[0];
                             if(_sum == 0){
                                 _sum = __obj.sum[1];
@@ -349,7 +349,7 @@ view._search = function(req, res){
                         Service.find({}, function(err, obj){
                             _services = [];
                             obj.map(function(_obj){
-                                if(checked.indexOf(_obj._id) == -1){
+                                if(checked.indexOf(String(_obj._id)) == -1){
                                     var _sum = _obj.sum[0];
                                     if(_sum == 0){
                                         _sum = _obj.sum[1];
