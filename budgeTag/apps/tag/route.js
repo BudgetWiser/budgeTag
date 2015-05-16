@@ -747,53 +747,54 @@ api.result = function(req, res, keyword, rels){
 };
 
 api.rank = function(req, res, page, opt){
-    var user = req.user;
+    res.render(page, opt);
+    // var user = req.user;
 
-    var checked = user._checked;
-    var l = [0, 0, 0];
-    keywords.forEach(function(k, i, arr){
-        checked.map(function(c){
-            if(c.issue == k){
-                l[i] += 1;
-            }
-        });
-    });
+    // var checked = user._checked;
+    // var l = [0, 0, 0];
+    // keywords.forEach(function(k, i, arr){
+    //     checked.map(function(c){
+    //         if(c.issue == k){
+    //             l[i] += 1;
+    //         }
+    //     });
+    // });
 
-    User.find({}, function(err, _users){
-        var users = [], rank = 0;
+    // User.find({}, function(err, _users){
+    //     var users = [], rank = 0;
 
-        _users.map(function(_user){
-            users.push({
-                _id: _user._id,
-                length: _user._checked.length
-            });
-        });
+    //     _users.map(function(_user){
+    //         users.push({
+    //             _id: _user._id,
+    //             length: _user._checked.length
+    //         });
+    //     });
 
-        users.sort(function(a, b){
-            return b.length - a.length;
-        });
+    //     users.sort(function(a, b){
+    //         return b.length - a.length;
+    //     });
 
-        users.forEach(function(u, i, arr){
-            if(String(u._id) == String(user._id)){
-                rank = i + 1;
-            }
-        });
+    //     users.forEach(function(u, i, arr){
+    //         if(String(u._id) == String(user._id)){
+    //             rank = i + 1;
+    //         }
+    //     });
 
-        var survey = 'opened';
-        l.map(function(_l){
-            if(_l < 50){
-                survey = '';
-            }
-        });
+    //     var survey = 'opened';
+    //     l.map(function(_l){
+    //         if(_l < 50){
+    //             survey = '';
+    //         }
+    //     });
 
-        opt['rank'] = rank;
-        opt['first'] = users[0].length;
-        if(survey != ''){
-            opt['survey'] = 'opened';
-        }
+    //     opt['rank'] = rank;
+    //     opt['first'] = users[0].length;
+    //     if(survey != ''){
+    //         opt['survey'] = 'opened';
+    //     }
 
-        res.render(page, opt);
-    });
+    //     res.render(page, opt);
+    // });
 };
 
 
