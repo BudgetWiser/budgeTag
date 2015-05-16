@@ -321,7 +321,7 @@ view._search = function(req, res){
                         }
                     });
 
-                    if(_services >= 6){
+                    if(_services.length >= 6){
                         //api.shuffle(__services);
 
                         var __services = __services.slice(0, 4);
