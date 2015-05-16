@@ -322,7 +322,7 @@ view._search = function(req, res){
                     });
 
                     if(_services.length >= 6){
-                        //api.shuffle(__services);
+                        api.shuffle(__services);
 
                         var __services = __services.slice(0, 4);
 
