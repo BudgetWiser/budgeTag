@@ -747,18 +747,49 @@ api.result = function(req, res, keyword, rels){
 };
 
 api.rank = function(req, res, page, opt){
-    res.render(page, opt);
-    // var user = req.user;
 
-    // var checked = user._checked;
-    // var l = [0, 0, 0];
-    // keywords.forEach(function(k, i, arr){
-    //     checked.map(function(c){
-    //         if(c.issue == k){
-    //             l[i] += 1;
-    //         }
-    //     });
-    // });
+    var user = req.user;
+
+    var checked = user._checked;
+    var l = [0, 0, 0];
+    keywords.forEach(function(k, i, arr){
+        checked.map(function(c){
+            if(c.issue == k){
+                l[i] += 1;
+            }
+        });
+    });
+
+
+    db = req.db
+    db.collection('users').aggregate([{"$project":{ username:1, numTags: {"$size": "$checked"}}}, {"$sort":{numTags:-1}}],
+        function(err, users){
+
+            var survey = 'opened';
+            l.map(function(_l){
+                if(_l < 50){
+                    survey = '';
+                }
+            });
+
+            rank = 0 
+
+            users.forEach(function(u, i, arr){
+                if(String(u._id) == String(user._id)){
+                    rank = i + 1;
+                }
+            });
+
+            opt['rank'] = rank;
+            opt['first'] = users[0].numTags;
+            if(survey != ''){
+                opt['survey'] = 'opened';
+            }
+
+            res.render(page, opt);
+        });
+
+
 
     // User.find({}, function(err, _users){
     //     var users = [], rank = 0;

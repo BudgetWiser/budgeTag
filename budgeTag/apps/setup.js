@@ -14,6 +14,13 @@ var express = require('express'),
     LocalStrategy = require('passport-local').Strategy,
     mongoose = require('mongoose');
 
+// mongodb settings
+var mongo = require('mongoskin');
+
+//var db = mongo.db("mongodb://143.248.234.88:17027/budgetmap_proto", {native_parser: true});
+//var db = mongo.db("mongodb://143.248.234.88:27017/budgetmap_live", {native_parser: true});
+var skindb = mongo.db("mongodb://localhost:38716/budgeTag", {native_parser: true});
+
 /*
  * Set app as express()
  */
@@ -78,6 +85,13 @@ app.use(cookieParser());
  * Setup routes
  */
 
+app.use(function(req, res, next){
+    req.db = skindb;
+    
+    req.toObjectID = mongo.helper.toObjectID;
+    next();
+});
+
 var routes = [
     'account/route',
     'tag/route'
@@ -90,6 +104,8 @@ routes.forEach(function(route){
 /*
  * Setup mongo DB models
  */
+// db settings
+
 
 var db = mongoose.connection;
 
