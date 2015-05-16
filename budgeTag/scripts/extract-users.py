@@ -16,5 +16,8 @@ if __name__ == "__main__":
 		userCSV = csv.writer(csvfile)
 
 		for user in users:
-			for check in user['_checked']:
-				userCSV.writerow([user['username'], user['type'], check['issue'].encode("utf-8"), check['service'].encode("utf-8")])
+			if len(user['_checked'])==0:
+				userCSV.writerow([user['username'], user['type'], "-", "-"])
+			else:
+				for check in user['_checked']:
+					userCSV.writerow([user['username'], user['type'], check['issue'].encode("utf-8"), check['service'].encode("utf-8")])
