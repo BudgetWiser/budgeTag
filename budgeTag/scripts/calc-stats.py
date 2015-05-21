@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
 	expertSols = {}
 	availableIssues = {}
-	with open('expert-solutions-seoul.csv', 'rU') as csvfile:
+	with open('expert-solutions.csv', 'rU') as csvfile:
 		solreader = csv.reader(csvfile)
 		header = solreader.next()
 		for row in solreader:
@@ -110,6 +110,7 @@ if __name__ == "__main__":
 	# print availableIssues
 	votes = {}
 	issueMap = {}
+	userType = 3 # 0 : random, 1: td-tdf 2: rand + td-tdf 3: all
 	for issue in issues.find():
 		votes[issue['_id']] = {}
 		issueMap[issue['_id']] = issue
@@ -122,10 +123,12 @@ if __name__ == "__main__":
 		# if userList.has_key(user['username'])==False: # filter users
 		# 	continue
 
-		checked = {}
+		checked = {} # for duplicate votes
 
 		for vote in user['checked']:
-			if checked.has_key(str(vote['issue']) + str(vote['service'])):#duplicate vote found
+			if checked.has_key(str(vote['issue']) + str(vote['service'])): #duplicate vote found
+				continue
+			if userType!=3 and user['type']!=userType:
 				continue
 			checked[str(vote['issue']) + str(vote['service'])] = True
 			if votes[vote['issue']].has_key(vote['service'])==False:
@@ -141,131 +144,159 @@ if __name__ == "__main__":
 	with open('crowd-solutions.csv', 'wb') as csvfile:
 		userCSV = csv.writer(csvfile)
 		rows = []
-		row = ['category1', 'category2', 'category3', 'category4', 'service', 'issue', 'agree', 'disagree', 'noidea', 'expSol'] 
+		row = ['usertype', 'category1', 'category2', 'category3', 'category4', 'service', 'issue', 'agree', 'disagree', 'noidea', 'expSol'] 
 		row=[ s.encode('utf-8') if isinstance(s, unicode) else s for s in row]
-		rows.append(row)	
-		for issueID, services in votes.iteritems():
-			issue = issueMap[issueID]
-			if availableIssues.has_key(issue['keyword'].encode('utf-8'))==False:
-				print 'issue not found -', issue['keyword']
-				continue
-			print 'processing...', issue['keyword']
-			records = []
-			for serviceID, vote in services.iteritems():
-				service = serviceMap[serviceID]
-				categories = service['categories']
-				key = ''.join(categories + [service['name'], issue['keyword']])
-				#print key.encode('utf-8').replace(" ", "")
-				expSol = expertSols[key.replace(" ", "")]
+		rows.append(row)
+
+		with open('crowd-stats.csv', 'wb') as csvfile2:
+			statCSV = csv.writer(csvfile2)
+			rows2 = []
+			row2 = ['Issue', 'UserType', 'Threshold', 'WeakStrongTN', 'WeakStrongTP', 'WeakStrongFN', 'WeakStrongFP', 'WeakStrongPrecision', 'WeakStrongRecall', 'WeakStrongAccuracy',\
+			 'StrongTN', 'StrongTP', 'StrongFN', 'StrongFP', 'StrongPrecision', 'StrongRecall', 'StrongAccuracy'] 
+			rows2.append(row2)	
 
 
-				row = categories + [service['name'], issue['keyword'], vote['agree'], vote['disagree'], vote['noidea'], expSol]
-				records.append(row)
-				row=[ s.encode('utf-8') if isinstance(s, unicode) else s for s in row]
-				rows.append(row)
+			for issueID, services in votes.iteritems():
+				issue = issueMap[issueID]
+				if availableIssues.has_key(issue['keyword'].encode('utf-8'))==False:
+					print 'issue not found -', issue['keyword']
+					continue
+				print 'processing...', issue['keyword']
+				records = []
+				for serviceID, vote in services.iteritems():
+					service = serviceMap[serviceID]
+					categories = service['categories']
+					key = ''.join(categories + [service['name'], issue['keyword']])
+					#print key.encode('utf-8').replace(" ", "")
+					expSol = expertSols[key.replace(" ", "")]
 
-			# Thresholding
-			weakPrecisions 	= []
-			weakRecalls 	= []
-			weakAccuracies 	= []
 
-			strongPrecisions 	= []
-			strongRecalls 		= []
-			strongAccuracies 	= []
+					row = [userType] + categories + [service['name'], issue['keyword'], vote['agree'], vote['disagree'], vote['noidea'], expSol]
+					records.append(row)
+					row=[ s.encode('utf-8') if isinstance(s, unicode) else s for s in row]
+					rows.append(row)
 
-			thresholds = xrange(6)
+				#####################################################################################################
 
-			for threshold in thresholds:
-				print '============= agree > disagree + ', threshold, " =============="
-				weakTN		= 0
-				weakTP		= 0
-				weakFN 		= 0
-				weakFP 		= 0
-				strongTN	= 0
-				strongTP	= 0
-				strongFN	= 0
-				strongFP	= 0
+				# Thresholding
+				weakPrecisions 	= []
+				weakRecalls 	= []
+				weakAccuracies 	= []
 
-				for record in records:	
+				strongPrecisions 	= []
+				strongRecalls 		= []
+				strongAccuracies 	= []
 
-					agree 		= record[6]
-					disagree	= record[7]
-					solution 	= record[9]
-					if agree+disagree<=threshold: #minimum number of votes
-						continue
-					if agree>(disagree+threshold): #predicted positive
-						if solution>=1: # weak positive class
-							weakTP 		+= 1
-						if solution==2: # strong positive class
-							strongTP 	+= 1
-						if solution==0:
-							weakFP 		+= 1
-							strongFP	+= 1
-					else: # predicted negative
-						if solution>=1: # weak positive class
-							weakFN 		+= 1
-						if solution==2: # strong positive class
-							strongFN 	+= 1
-						if solution==0:
-							weakTN 		+= 1
-							strongTN	+= 1
+				thresholds = xrange(6)
 
-				weakPrecision 	= 1.0*weakTP/(weakFP+weakTP)
-				weakRecall 		= 1.0*weakTP/(weakFN+weakTP)
-				weakAccuracy 	= 1.0*(weakTP+weakTN)/(weakFN+weakTP+weakFP+weakTN)
+				for threshold in thresholds:
+					print '============= agree > disagree + ', threshold, " =============="
+					weakTN		= 0
+					weakTP		= 0
+					weakFN 		= 0
+					weakFP 		= 0
+					strongTN	= 0
+					strongTP	= 0
+					strongFN	= 0
+					strongFP	= 0
 
-				weakPrecisions.append(weakPrecision)
-				weakRecalls.append(weakRecall)
-				weakAccuracies.append(weakAccuracy)
+					for record in records:	
 
-				strongPrecision = 0
-				if strongFP+strongTP!=0:
-					strongPrecision = 1.0*strongTP/(strongFP+strongTP)
-				strongRecall = 0
-				if strongFN+strongTP!=0:
-					strongRecall 	= 1.0*strongTP/(strongFN+strongTP)
-				strongAccuracy 	= 1.0*(strongTP+strongTN)/(strongFN+strongTP+strongFP+strongTN)
+						agree 		= record[7]
+						disagree	= record[8]
+						solution 	= record[10]
+						if agree+disagree<=threshold: #minimum number of votes
+							continue
+						if agree>(disagree+threshold): #predicted positive
+							if solution>=1: # weak positive class
+								weakTP 		+= 1
+							if solution==2: # strong positive class
+								strongTP 	+= 1
+							if solution==0:
+								weakFP 		+= 1
+								strongFP	+= 1
+						elif disagree>(agree+threshold): # predicted negative
+							if solution>=1: # weak positive class
+								weakFN 		+= 1
+							if solution==2: # strong positive class
+								strongFN 	+= 1
+							if solution==0:
+								weakTN 		+= 1
+								strongTN	+= 1
 
-				strongPrecisions.append(strongPrecision)
-				strongRecalls.append(strongRecall)
-				strongAccuracies.append(strongAccuracy)
+					weakPrecision 	= 0
+					if weakFP+weakTP!=0:
+						weakPrecision 	= 1.0*weakTP/(weakFP+weakTP)
+					weakRecall 		= 0
+					if weakFN+weakTP!=0:
+						weakRecall 		= 1.0*weakTP/(weakFN+weakTP)
+					weakAccuracy 	= 0
+					if (weakFN+weakTP+weakFP+weakTN)!=0:
+						weakAccuracy 	= 1.0*(weakTP+weakTN)/(weakFN+weakTP+weakFP+weakTN)
 
-				print '  ----- Weak -----'
-				print '  TN, FP = ', weakTN, ", ", weakFP
-				print '  FN, TP = ', weakFN, ", ", weakTP
-				print '  Precision = {:.2%}'.format(weakPrecision)
-				print '  Recall = {:.2%}'.format(weakRecall)	
-				print '  Accuracy = {:.2%}'.format(weakAccuracy)				
-				print '  ----- Strong -----'
-				print '  TN, FP = ', strongTN, ", ", strongFP
-				print '  FN, TP = ', strongFN, ", ", strongTP					
-				print '  Precision = {:.2%}'.format(strongPrecision)
-				print '  Recall = {:.2%}'.format(strongRecall)	
-				print '  Accuracy = {:.2%}'.format(strongAccuracy)				
+					weakPrecisions.append(weakPrecision)
+					weakRecalls.append(weakRecall)
+					weakAccuracies.append(weakAccuracy)
 
-			plt.figure(issue['keyword'])
-			
-			plt.grid(True)
-			plt.subplot(121)
-			plt.title("Weak")
-			plt.plot(thresholds, weakPrecisions, 'r', label="Precision")
-			plt.plot(thresholds, weakRecalls, 'g',  label="Recall")
-			plt.plot(thresholds, weakAccuracies, 'b', label="Accuracy")
-			plt.legend(loc='best', fontsize="small", framealpha=0.3)
-			plt.ylabel("Percentage (%) ")
-			plt.xlabel("agree > disagree + 'x'")
-			plt.axis([0, 5, 0.0, 1.0])
-			plt.subplot(122)
-			plt.title("Strong")
-			plt.plot(thresholds, strongPrecisions, 'r', label="Precision")
-			plt.plot(thresholds, strongRecalls, 'g', label="Recall")
-			plt.plot(thresholds, strongAccuracies, 'b', label="Accuracy")
-			plt.legend(loc='best', fontsize="small", framealpha=0.3)
-			plt.ylabel("Percentage (%) ")
-			plt.xlabel("agree > disagree + 'x'")
-			plt.axis([0, 5, 0.0, 1.0])
-			plt.show()
+					strongPrecision = 0
+					if strongFP+strongTP!=0:
+						strongPrecision = 1.0*strongTP/(strongFP+strongTP)
+					strongRecall = 0
+					if strongFN+strongTP!=0:
+						strongRecall 	= 1.0*strongTP/(strongFN+strongTP)
+					strongAccuracy  = 0
+					if (strongFN+strongTP+strongFP+strongTN)!=0:
+						strongAccuracy 	= 1.0*(strongTP+strongTN)/(strongFN+strongTP+strongFP+strongTN)
 
+					strongPrecisions.append(strongPrecision)
+					strongRecalls.append(strongRecall)
+					strongAccuracies.append(strongAccuracy)
+
+					print '  ----- Weak -----'
+					print '  TN, FP = ', weakTN, ", ", weakFP
+					print '  FN, TP = ', weakFN, ", ", weakTP
+					print '  Precision = {:.2%}'.format(weakPrecision)
+					print '  Recall = {:.2%}'.format(weakRecall)	
+					print '  Accuracy = {:.2%}'.format(weakAccuracy)				
+					print '  ----- Strong -----'
+					print '  TN, FP = ', strongTN, ", ", strongFP
+					print '  FN, TP = ', strongFN, ", ", strongTP					
+					print '  Precision = {:.2%}'.format(strongPrecision)
+					print '  Recall = {:.2%}'.format(strongRecall)	
+					print '  Accuracy = {:.2%}'.format(strongAccuracy)		
+
+					row2 = [issue['keyword'], userType, threshold, weakTN, weakTP, weakFN, weakFP, weakPrecision, weakRecall, weakAccuracy, \
+					strongTN, strongTP, strongFN, strongFP, strongPrecision, strongRecall, strongAccuracy]
+
+					row2=[ s.encode('utf-8') if isinstance(s, unicode) else s for s in row2]
+					rows2.append(row2)	
+
+				plt.figure(issue['keyword'])
+				
+				plt.grid(True)
+				plt.subplot(121)
+				plt.title("Weak+Strong")
+				plt.plot(thresholds, weakPrecisions, 'r', label="Precision")
+				plt.plot(thresholds, weakRecalls, 'g',  label="Recall")
+				plt.plot(thresholds, weakAccuracies, 'b', label="Accuracy")
+				plt.legend(loc='best', fontsize="small", framealpha=0.3)
+				plt.ylabel("Percentage (%) ")
+				plt.xlabel("agree > disagree + 'x'")
+				plt.axis([0, 5, 0.0, 1.0])
+				plt.subplot(122)
+				plt.title("Strong")
+				plt.plot(thresholds, strongPrecisions, 'r', label="Precision")
+				plt.plot(thresholds, strongRecalls, 'g', label="Recall")
+				plt.plot(thresholds, strongAccuracies, 'b', label="Accuracy")
+				plt.legend(loc='best', fontsize="small", framealpha=0.3)
+				plt.ylabel("Percentage (%) ")
+				plt.xlabel("agree > disagree + 'x'")
+				plt.axis([0, 5, 0.0, 1.0])
+				plt.savefig(issue['keyword'])
+    			# plt.show()
+
+			statCSV.writerows(rows2)
+				#####################################################################################################
 
 		userCSV.writerows(rows)
 
