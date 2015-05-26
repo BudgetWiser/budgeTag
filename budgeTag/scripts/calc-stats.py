@@ -16,7 +16,7 @@ if __name__ == "__main__":
 	services = client.budgeTag.services
 
 	userList = {}
-	with open('survey.csv', 'rU') as csvfile:
+	with open('valid-users.csv', 'rU') as csvfile:
 		surveyReader = csv.reader(csvfile)
 		for row in surveyReader:
 			userList[row[0]] = True
@@ -151,8 +151,8 @@ if __name__ == "__main__":
 		with open('crowd-stats.csv', 'wb') as csvfile2:
 			statCSV = csv.writer(csvfile2)
 			rows2 = []
-			row2 = ['Issue', 'UserType', 'Threshold', 'WeakStrongTN', 'WeakStrongTP', 'WeakStrongFN', 'WeakStrongFP', 'WeakStrongPrecision', 'WeakStrongRecall', 'WeakStrongAccuracy',\
-			 'StrongTN', 'StrongTP', 'StrongFN', 'StrongFP', 'StrongPrecision', 'StrongRecall', 'StrongAccuracy'] 
+			row2 = ['Issue', 'UserType', 'Threshold', 'WeakStrongTN', 'WeakStrongTP', 'WeakStrongFN', 'WeakStrongFP', 'WeakStrongPrecision', 'WeakStrongRecall', 'WeakStrongPrecisionUnrel','WeakStrongRecallUnrel','WeakStrongAccuracy',\
+			 'StrongTN', 'StrongTP', 'StrongFN', 'StrongFP', 'StrongPrecision', 'StrongRecall','StrongPrecisionUnrel', 'StrongRecallUnrel', 'StrongAccuracy'] 
 			rows2.append(row2)	
 
 
@@ -234,6 +234,13 @@ if __name__ == "__main__":
 					if (weakFN+weakTP+weakFP+weakTN)!=0:
 						weakAccuracy 	= 1.0*(weakTP+weakTN)/(weakFN+weakTP+weakFP+weakTN)
 
+					weakPrecisionUnrel = 0
+					if weakFN+weakTN!=0:
+						weakPrecisionUnrel = 1.0*weakTN/(weakFN+weakTN)
+					weakRecallUnrel = 0
+					if weakFP+weakTN!=0:
+						weakRecallUnrel 	= 1.0*weakTN/(weakFP+weakTN)
+
 					weakPrecisions.append(weakPrecision)
 					weakRecalls.append(weakRecall)
 					weakAccuracies.append(weakAccuracy)
@@ -248,6 +255,13 @@ if __name__ == "__main__":
 					if (strongFN+strongTP+strongFP+strongTN)!=0:
 						strongAccuracy 	= 1.0*(strongTP+strongTN)/(strongFN+strongTP+strongFP+strongTN)
 
+					strongPrecisionUnrel = 0
+					if strongFN+strongTN!=0:
+						strongPrecisionUnrel = 1.0*strongTN/(strongFN+strongTN)
+					strongRecallUnrel = 0
+					if strongFP+strongTN!=0:
+						strongRecallUnrel 	= 1.0*strongTN/(strongFP+strongTN)
+					
 					strongPrecisions.append(strongPrecision)
 					strongRecalls.append(strongRecall)
 					strongAccuracies.append(strongAccuracy)
@@ -265,8 +279,8 @@ if __name__ == "__main__":
 					print '  Recall = {:.2%}'.format(strongRecall)	
 					print '  Accuracy = {:.2%}'.format(strongAccuracy)		
 
-					row2 = [issue['keyword'], userType, threshold, weakTN, weakTP, weakFN, weakFP, weakPrecision, weakRecall, weakAccuracy, \
-					strongTN, strongTP, strongFN, strongFP, strongPrecision, strongRecall, strongAccuracy]
+					row2 = [issue['keyword'], userType, threshold, weakTN, weakTP, weakFN, weakFP, weakPrecision, weakRecall, weakPrecisionUnrel, weakRecallUnrel, weakAccuracy, \
+					strongTN, strongTP, strongFN, strongFP, strongPrecision, strongRecall, strongPrecisionUnrel, strongRecallUnrel, strongAccuracy]
 
 					row2=[ s.encode('utf-8') if isinstance(s, unicode) else s for s in row2]
 					rows2.append(row2)	

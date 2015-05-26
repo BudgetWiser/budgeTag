@@ -72,10 +72,10 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <li class="{{p_service}}"><a href="/service">실험 안내</a></li>
-                        <li class="{{p_search}}"><a href="/search">이슈별 분류 시작!</a></li>
+                        <!-- <li class="{{p_service}}"><a href="/service">실험 안내</a></li>
+                        <li class="{{p_search}}"><a href="/search">이슈별 분류 시작!</a></li> -->
                         <li class="{{p_issues}}"><a href="/issues">이슈별 예산 집계 현황</a></li>
-                        {{#user}}
+                        <!-- {{#user}}
                         <li class="{{p_profile}}"><a href="/profile">나의 프로필</a></li>
                         <li><a class="btn btn-primary" id="logout-btn" href="/logout">로그아웃</a></li>
                         <li><a class="btn btn-danger" id="rank-btn" href="/profile">현재 당신은 {{rank}}위</a></li>
@@ -84,7 +84,7 @@
                         {{^user}}
                         <li><a class="btn btn-primary" id="login-btn" href="/login">로그인</a></li>
                         <li><a class="btn btn-primary" id="register-btn" href="/agree" style="padding-left:0;padding-right:0;">실험동의 및 회원가입</a></li>
-                        {{/user}}
+                        {{/user}} -->
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -93,10 +93,10 @@
                         <br>
                         실험 결과는 예산지도에서 보실 수 있습니다 -> <a href="http://budgetmap.budgetwiser.org" target="_blank">예산지도 보러가기</a>
                     </div>
-                    {{#survey}}
+                    <!-- {{#survey}}
                     <div class="container-fluid">
                         <a style="width: 100%;" target="_blank" class="btn btn-warning" id="survey-btn" href="https://qtrial2014.az1.qualtrics.com/SE/?SID=SV_1FTaoPssREm2R81" title="이 설문 조사 후, 추첨 대상에 포함됩니다.">실험과제 후 설문조사</a>
-                    </div>
+                    </div> -->
                     {{/survey}}
                     {{{yield-content}}}
                 </div>
