@@ -834,7 +834,7 @@ api.rank = function(req, res, page, opt){
  */
 
 function setup(app){
-    app.get('/', function(req, res){res.redirect('/search')});
+    app.get('/', function(req, res){res.redirect('/issues')});
 
     //view
     app.get('/search', mw.isAuth, view.search);
