@@ -14,7 +14,7 @@
         "serve-favicon": "~2.2.0",
         "supervisor": "*",
         "hogan-express": "*",
-        "mongodb": "~1.4",
+        "mongodb": "~2.0",
         "mongoskin": "*",
         "mongoose": "*",
         "request": "*",
