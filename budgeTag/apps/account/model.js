@@ -17,7 +17,8 @@ var userSchema = new Schema({
         service: String,
         issue: String
     }],
-    type: {type: Number}
+    type: {type: Number},
+    session: {type: String}
 });
 
 userSchema.plugin(passportLocalMongoose);

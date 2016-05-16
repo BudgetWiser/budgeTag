@@ -514,6 +514,23 @@ view.profile = function(req, res){
     }
 };
 
+view.ranking = function(req, res) {
+
+  User.find({}, function(err, arr) {
+    arr.sort(function(a, b) {
+      return a.checked.length - b.checked.length;
+    });
+
+
+    res.render('tag/ranking', {
+      layout: 'tag/layout',
+      user: req.user,
+      p_profile: "active",
+      ranking: arr
+    });
+  });
+}
+
 /*
  * API
  */
@@ -841,6 +858,7 @@ function setup(app){
     app.get('/issues', view.issues);
     app.get('/profile', mw.isAuth, view.profile);
     app.get('/service', view.service);
+    app.get('/ranking', view.ranking);
 
     //api
     app.post('/save', mw.isAuth, api.save);

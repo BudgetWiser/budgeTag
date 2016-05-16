@@ -11,6 +11,9 @@
             {{#email_error}}
             <p class="bg-danger">이미 가입된 이메일입니다.</p>
             {{/email_error}}
+            {{#session_error}}
+            <p class="bg-danger">세션 코드를 다시 확인해주세요.</p>
+            {{/session_error}}
             <form method="POST" action="/register">
                 <div class="form-group {{#key_error}}has-error{{/key_error}}">
                     <label for="key">회원가입 코드</label>
@@ -32,6 +35,13 @@
                         한 번 설정하면 바꿀 수 없으니, 신중하게 설정해주세요.
                     </p>
                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요.">
+                </div>
+                <div class="form-group {{#session_error}}has-error{{/session_error}}">
+                  <label for="session">세션 코드</label>
+                  <p class="help-block">
+                    실험 진행자가 제공한 세션 코드를 입력해주세요.
+                  </p>
+                  <input type="text" class="form-control" id="session" name="session" placeholder="세션 코드를 입력해주세요.">
                 </div>
                 <hr>
                 <p class="text-danger">회원가입정보(아이디와 비밀번호)는 외부로 절대 유출되지 않으며 실험참가비 지급 후 (2015년 5월 31일 이전) 모두 폐기됩니다.</p>

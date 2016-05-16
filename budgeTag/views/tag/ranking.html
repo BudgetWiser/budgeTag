@@ -1,0 +1,48 @@
+{{#yield-title}}전체 순위{{/yield-title}}
+{{#yield-scripts}}
+<script>
+  $(document).ready(function() {
+    (function ($) {
+      $("#filter").keyup(function() {
+        // split in forms filter:(int)
+        var regex = new RegExp($(this).val(), 'i');
+        $(".searchable tr").hide();
+        $(".searchable tr").filter(function() {
+          return regex.test($(this).text());
+        }).show();
+      });
+    }(jQuery));
+  });
+</script>
+{{/yield-scripts}}
+{{#yield-content}}
+<div class="input-group">
+  <span class="input-group-addon">필터: </span>
+  <input id="filter" type="text" class="form-control" placeholder="여기에 필터를 입력하세요"</input>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <h3>전체 순위</h3>
+    </hr>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <td>사용자</td>
+        <td>분류한 사업 수</td>
+        <td>세션 코드</td>
+      </tr>
+    </thead>
+    <tbody class="searchable">
+      {{ranking}}
+      {{#ranking}}
+      <tr>
+        <td>{{username}}</td>
+        <td>{{checked.length}}</td>
+        <td>{{session}}</td>
+      </tr>
+      {{/ranking}}
+    </tbody>
+  </table>
+</div>
+{{/yield-content}}

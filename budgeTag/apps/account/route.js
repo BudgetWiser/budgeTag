@@ -40,7 +40,8 @@ view.register = function(req, res){
         res.render('tag/register', {
             layout: 'tag/layout',
             key_error: req.query.key_error,
-            email_error: req.query.email_error
+            email_error: req.query.email_error,
+            session_error: req.query.session_error
         });
     }
 };
@@ -74,13 +75,19 @@ api.logout = function(req, res){
 api.register = function(req, res){
     var username = req.body.username,
         password = req.body.password,
-        key = req.body.key;
+        key = req.body.key,
+        session = req.body.session;
 
+    if (session.length == 0) {
+      return res.redirect('/register?session_error=true');
+    }
     if(key == 'BudgetWiser2015'){
+      console.log(session);
         User.register(
             new User({
                 username: username,
-                type: typeNumber
+                type: typeNumber,
+                session: session
             }),
             password,
             function(err, account){
