@@ -517,16 +517,21 @@ view.profile = function(req, res){
 view.ranking = function(req, res) {
 
   User.find({}, function(err, arr) {
-    arr.sort(function(a, b) {
-      return a.checked.length - b.checked.length;
+    var rank = []
+    arr.map(function(userdata) {
+      rank.push({
+        _id: userdata._id,
+        username: userdata.username,
+        session: userdata.session,
+        checked: userdata.checked.length
+      });
     });
-
 
     res.render('tag/ranking', {
       layout: 'tag/layout',
       user: req.user,
       p_profile: "active",
-      ranking: arr
+      ranking: rank
     });
   });
 }
@@ -845,6 +850,17 @@ api.rank = function(req, res, page, opt){
     // });
 };
 
+api.ranking = function(req, res) {
+  var id = req.body._id;
+
+  User.findOne({_id: id}, function(err, userdata) {
+    res.json({
+      '_id': id,
+      'checked': userdata._checked
+    });
+  });
+}
+
 
 /*
  * Route initialize
@@ -862,6 +878,7 @@ function setup(app){
 
     //api
     app.post('/save', mw.isAuth, api.save);
+    app.post('/ranking', api.ranking);
 }
 
 module.exports = setup;

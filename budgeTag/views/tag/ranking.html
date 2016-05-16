@@ -12,6 +12,23 @@
         }).show();
       });
     }(jQuery));
+
+    $(".userdata-detail").on('click', function() {
+      console.log($(this).parent().parent().attr('id'));
+      $.post("/ranking",
+             {_id: $(this).parent().parent().attr('id').split('userdata-')[1]},
+             function(data) {
+               $("#modal-tbody").text('');
+               for (var i=0; i<data.checked.length; i++) {
+                 $("#modal-tbody").append("<tr>");
+                 $("#modal-tbody").append("<td>" + data.checked[i].service + "</td>");
+                 $("#modal-tbody").append("<td>" + data.checked[i].issue + "</td>");
+                 $("#modal-tbody").append("</tr>");
+               }
+               $("#modal-tagRecords").modal('show');
+               console.log(data);
+             });
+    });
   });
 </script>
 {{/yield-scripts}}
@@ -21,6 +38,31 @@
   <input id="filter" type="text" class="form-control" placeholder="여기에 필터를 입력하세요"</input>
 </div>
 <div class="container-fluid">
+  <div id="modal-tagRecords" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button on type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">태그 기록</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <td>사업명</td>
+                <td>이슈</td>
+              </tr>
+            </thead>
+            <tbody id="modal-tbody">
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <h3>전체 순위</h3>
     </hr>
@@ -31,15 +73,16 @@
         <td>사용자</td>
         <td>분류한 사업 수</td>
         <td>세션 코드</td>
+        <td>태그 기록</td>
       </tr>
     </thead>
     <tbody class="searchable">
-      {{ranking}}
       {{#ranking}}
-      <tr>
+      <tr id="userdata-{{_id}}">
         <td>{{username}}</td>
-        <td>{{checked.length}}</td>
+        <td>{{checked}}</td>
         <td>{{session}}</td>
+        <td><a class="userdata-detail">더보기</a></td>
       </tr>
       {{/ranking}}
     </tbody>
