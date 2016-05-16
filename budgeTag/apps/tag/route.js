@@ -113,6 +113,7 @@ view._search = function(req, res){
         if(usertype == 0){
             //random mode
             Service.find({}, function(err, obj){
+                console.log(obj);
                 _services = [];
                 obj.map(function(_obj){
                     if(checked.indexOf(String(_obj._id)) == -1){
@@ -685,14 +686,23 @@ api.save = function(req, res){
 
                         _user._checked.push({
                             issue: _issue.keyword,
-                            service: _service.name
+                            service: _service.name,
+                            type: rels[_service._id]
                         });
                     });
 
                     _user.save(function(____err){
                         if(____err) return console.log('user save error', ____err);
 
-                        api.result(req, res, keyword, rels);
+                        /* Redirects to tag/candidate for Blair's experiment */
+                        // api.result(req, res, keyword, rels);
+                        res.render('tag/candidate', {
+                            layout: 'tag/layout',
+                            keyword: keyword,
+                            services: _services.slice(0, 10),
+                            user: user,
+                            p_search: "active"
+                        });
                     });
                 });
             });

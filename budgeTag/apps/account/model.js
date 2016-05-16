@@ -15,7 +15,8 @@ var userSchema = new Schema({
     }],
     _checked: [{
         service: String,
-        issue: String
+        issue: String,
+        type: {type: Number}
     }],
     type: {type: Number},
     session: {type: String}

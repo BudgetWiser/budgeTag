@@ -81,7 +81,9 @@ api.register = function(req, res){
     if (session.length == 0) {
       return res.redirect('/register?session_error=true');
     }
+    /*
     if(key == 'BudgetWiser2015'){
+   */
       console.log(session);
         User.register(
             new User({
@@ -103,9 +105,11 @@ api.register = function(req, res){
                 }
             }
         );
+    /*
     }else{
         res.redirect('/register?key_error=true');
     }
+    */
 };
 
 function setup(app){

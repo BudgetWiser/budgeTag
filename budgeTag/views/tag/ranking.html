@@ -23,6 +23,7 @@
                  $("#modal-tbody").append("<tr>");
                  $("#modal-tbody").append("<td>" + data.checked[i].service + "</td>");
                  $("#modal-tbody").append("<td>" + data.checked[i].issue + "</td>");
+                 $("#modal-tbody").append("<td>" + data.checked[i].type + "</td>");
                  $("#modal-tbody").append("</tr>");
                }
                $("#modal-tagRecords").modal('show');
@@ -51,6 +52,7 @@
               <tr>
                 <td>사업명</td>
                 <td>이슈</td>
+                <td>태그</td>
               </tr>
             </thead>
             <tbody id="modal-tbody">
