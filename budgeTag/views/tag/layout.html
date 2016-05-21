@@ -58,12 +58,12 @@
                         <li class="{{p_profile}}"><a href="/profile">나의 프로필</a></li>
                         <!--<li class="{{p_ranking}}"><a href="/ranking">전체 순위</a></li>-->
                         <li><a class="btn btn-primary" href="/logout">로그아웃</a></li>
-                        <li><a class="btn btn-danger" id="rank-btn" href="/profile">현재 당신은 {{rank}}위</a></li>
+                        <!--<li><a class="btn btn-danger" id="rank-btn" href="/profile">현재 당신은 {{rank}}위</a></li>-->
                         <li style="text-align:center;margin-top:-8px"><small>(현재 1위가 분류한 사업 수 : {{first}})</small></li>
                         {{/user}}
                         {{^user}}
                         <li><a class="btn btn-primary" href="/login">로그인</a></li>
-                        <li><a class="btn btn-primary" href="/agree" style="padding-left:0;padding-right:0;">실험동의 및 회원가입</a></li>
+                        <!--<li><a class="btn btn-primary" href="/agree" style="padding-left:0;padding-right:0;">실험동의 및 회원가입</a></li>-->
                         {{/user}}
                     </ul>
                 </div>
@@ -80,8 +80,8 @@
                         {{#user}}
                         <li class="{{p_profile}}"><a href="/profile">나의 프로필</a></li>
                         <li><a class="btn btn-primary" id="logout-btn" href="/logout">로그아웃</a></li>
-                        <li><a class="btn btn-danger" id="rank-btn" href="/profile">현재 당신은 {{rank}}위</a></li>
-                        <li style="text-align:center;margin-top:-8px"><small style="font-size:100%;">(현재 1위가 분류한 사업 수 : {{first}})</small></li>
+                        <!--<li><a class="btn btn-danger" id="rank-btn" href="/profile">현재 당신은 {{rank}}위</a></li>-->
+                        <!--<li style="text-align:center;margin-top:-8px"><small style="font-size:100%;">(현재 1위가 분류한 사업 수 : {{first}})</small></li>-->
                         {{/user}}
                         {{^user}}
                         <li><a class="btn btn-primary" id="login-btn" href="/login">로그인</a></li>
