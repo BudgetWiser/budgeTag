@@ -696,13 +696,7 @@ api.save = function(req, res){
 
                         /* Redirects to tag/candidate for Blair's experiment */
                         // api.result(req, res, keyword, rels);
-                        res.render('tag/candidate', {
-                            layout: 'tag/layout',
-                            keyword: keyword,
-                            services: _services.slice(0, 10),
-                            user: user,
-                            p_search: "active"
-                        });
+                        res.redirect('back');
                     });
                 });
             });
