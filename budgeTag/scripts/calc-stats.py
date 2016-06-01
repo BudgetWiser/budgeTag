@@ -66,7 +66,19 @@ if __name__ == "__main__":
 			rows.append(row)
 			# print row
 			# userCSV.writerow(row)
-		
-
 		userCSV.writerows(rows)
+		
+	print 'processing rankings....'
+	with open('user-rankings.csv', 'wb') as csvfile:
+		userCSV = csv.writer(csvfile)
+
+		rows = []
+		for user in users.find():
+			row = [user['username'], user['type'], len(user['_checked'])]
+			rows.append(row)
+			# print row
+			# userCSV.writerow(row)		
+		sortedRows = sorted(rows, key=lambda x: x[2])
+		sortedRows.insert(0,  ['username', 'type', 'totalTags'])
+		userCSV.writerows(sortedRows)
 			
