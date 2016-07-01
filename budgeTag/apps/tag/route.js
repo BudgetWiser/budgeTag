@@ -9,6 +9,8 @@ var express = require('express'),
     mw = require('../account/middleware'),
     Parser = require('../clib/parser').Parser;
 
+var async = require('async'); 
+
 /*
  * Model setup
  */
@@ -102,8 +104,8 @@ view._search = function(req, res){
     var usertype = user.type;
 
     var checked = [];
-
-    Issue.findOne({keyword: keyword}, function(ierr, iobj){
+    
+    Issue.findOne({keyword: keyword}, "_id" ,function(ierr, iobj){
         user.checked.map(function(_checked){
             if(String(_checked.issue) == String(iobj._id)){
                 checked.push(String(_checked.service));
@@ -111,34 +113,62 @@ view._search = function(req, res){
         });
 
         if(usertype == 0){
-            //random mode
-            Service.find({}, function(err, obj){
-                console.log(obj);
-                _services = [];
-                obj.map(function(_obj){
-                    if(checked.indexOf(String(_obj._id)) == -1){
-                        var _sum = _obj.sum[0];
-                        if(_sum == 0){
-                            _sum = _obj.sum[1];
-                        }
-                        _sum = api.money(_sum);
+            var fill = function(listArr, targetAmt, cb){
+                if (listArr.length === targetAmt){
+                    return cb(listArr);
+                }
 
-                        _services.push({
-                            _id: _obj._id,
-                            name: _obj.name,
-                            sum: _sum,
-                            categories: _obj.categories.join(' > ')
+                var randomRange = function(min, max){
+                    return Math.floor(Math.random()*(max-min+1)+min);
+                };
+
+                var fetch = function (callback){
+                    var thisIndex = randomRange(0, 4013);
+                    Service.find({numKey: thisIndex}).limit(1).exec(function(err, obj){
+                        obj.map(function(_obj){
+                            if(checked.indexOf(String(_obj._id)) == -1){
+                                var _sum = _obj.sum[0];
+                                if(_sum == 0){
+                                    _sum = _obj.sum[1];
+                                }
+                                _sum = api.money(_sum);
+
+
+                                listArr.push({
+                                    _id: _obj._id,
+                                    name: _obj.name,
+                                    sum: _sum,
+                                    categories: _obj.categories.join(' > ')
+                                });
+                            }
                         });
+                        callback(null);
+                    });
+                };
+
+                var fetchArr = [];
+                for (var i=0; i<10; i++){
+                    fetchArr.push(fetch);
+                }
+
+                async.parallel(fetchArr,
+                    function(err, results) {
+                        if (err) {
+                            
+                        } else {
+                            fill(listArr, targetAmt, cb);
+                        }
                     }
-                });
-
-                api.shuffle(_services);
-
+                );
+            };
+            
+            var _services = [];
+            fill(_services, 10, function(listArr){
                 if(req.user){
                     api.rank(req, res, 'tag/candidate', {
                         layout: 'tag/layout',
                         keyword: keyword,
-                        services: _services.slice(0, 10),
+                        services: _services,
                         user: user,
                         p_search: "active"
                     });
@@ -146,7 +176,7 @@ view._search = function(req, res){
                     res.render('tag/candidate', {
                         layout: 'tag/layout',
                         keyword: keyword,
-                        services: _services.slice(0, 10),
+                        services: _services,
                         user: user,
                         p_search: "active"
                     });

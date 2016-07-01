@@ -27,6 +27,7 @@ var issueSchema = new Schema({
  */
 
 var serviceSchema = new Schema({
+    numKey: Number,
     name: String,
     sum: [Number],
     categories: [String],
