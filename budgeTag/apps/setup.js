@@ -23,7 +23,7 @@ var mongo = require('mongoskin');
 //var db = mongo.db("mongodb://143.248.234.88:17027/budgetmap_proto", {native_parser: true});
 //var db = mongo.db("mongodb://143.248.234.88:27017/budgetmap_live", {native_parser: true});
 var url = "mongodb://" + config.mongo.username + ":" + config.mongo.password
-                       + "@localhost:" + config.mongo.port + "/" + config.mongo.db_name;
+                       + "@"+ (config.mongo.host || "127.0.0.1" ) + ":" + config.mongo.port + "/" + config.mongo.db_name;
 var skindb = mongo.db(url, {native_parser: true});
 
 /*
@@ -126,7 +126,7 @@ db.once('open', function(){
     });
 });
 
-mongoose.connect('mongodb://localhost:38716/budgeTag');
+mongoose.connect(url);
 
 /*
  * Catch 404 and forward to error handler
